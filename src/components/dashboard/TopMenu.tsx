@@ -18,24 +18,24 @@ export default function TopMenu() {
       </li>
       <li className='list-none'>
         <Link 
-          href={'/home'} 
-          className={`border border-gray-500 p-2 rounded-lg ${pathname === '/home'? 'bg-white text-black': ''}`}
+          href={'/gastos'} 
+          className={`border border-gray-500 p-2 rounded-lg ${pathname === '/gastos'? 'bg-white text-black': ''}`}
         >
           Gastos
         </Link>
       </li>
       <li className='list-none'>
         <Link 
-          href={'/home'} 
-          className={`border border-gray-500 p-2 rounded-lg ${pathname === '/home'? 'bg-white text-black': ''}`}
+          href={'/ingresos'} 
+          className={`border border-gray-500 p-2 rounded-lg ${pathname === '/ingresos'? 'bg-white text-black': ''}`}
         >
             Ingresos
         </Link>
       </li>
       <li className='list-none'>
         <Link 
-          href={'/home'} 
-          className={`border border-gray-500 p-2 rounded-lg ${pathname === '/home'? 'bg-white text-black': ''}`}
+          href={'/graficos'} 
+          className={`border border-gray-500 p-2 rounded-lg ${pathname === '/graficos'? 'bg-white text-black': ''}`}
         >
           Gráficos
         </Link>
