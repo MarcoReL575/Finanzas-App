@@ -1,9 +1,10 @@
-import React from 'react'
+import FormTransaction from '@/src/features/transaction/components/FormTransaction'
 
 export default function AddTransactionPage() {
   return (
-    <form>
-        
-    </form>
+    <>
+        <h1 className='text-3xl text-center font-semibold'>Agrega gastos y lleva un control de tus Finanzas</h1>
+        <FormTransaction />
+    </>
   )
 }
