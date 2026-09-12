@@ -13,6 +13,7 @@ import { SignIn } from '../types/types'
 import { signInAction } from '../actions/signActions'
 import toast from 'react-hot-toast'
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 
 export default function FormLogin() {
 
@@ -46,6 +47,15 @@ export default function FormLogin() {
         <IconLogin />
         Iniciar Sesion
       </FormSubmit>
+      <section className='w-full text-sm flex items-center justify-center gap-x-4'>
+        <p>Aún no tienes una cuenta</p>
+        <Link
+          className = 'underline text'
+          href={'/auth/signup'}
+        >
+          Crea una aquí
+        </Link>
+      </section>
     </FormComponent>
   )
 }

@@ -8,7 +8,7 @@ export default function TopMenu() {
   const pathname = usePathname();
 
   return (
-    <menu className='flex items-center justify-between p-4 rounded-lg '>
+    <menu className='flex items-center justify-between gap-x-4 rounded-lg '>
       <li className='list-none'>
         <Link 
           href={'/home'} 

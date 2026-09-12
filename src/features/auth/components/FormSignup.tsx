@@ -13,6 +13,7 @@ import { UserAccount } from '@/src/features/auth/types/types'
 import { signUpAction } from '../actions/signActions'
 import toast from 'react-hot-toast'
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 
 export default function FormSignup() {
 
@@ -55,6 +56,15 @@ export default function FormSignup() {
         <IconCircleCheck />
         Crear cuenta
       </FormSubmit>
+      <section className='w-full text-sm flex items-center justify-center gap-x-4'>
+        <p>Ya tienes una cuenta</p>
+        <Link
+          className = 'underline font-semibold'
+          href={'/auth/signin'}
+        >
+          Inicia sesión aquí
+        </Link>
+      </section>
     </FormComponent>
   )
 }
