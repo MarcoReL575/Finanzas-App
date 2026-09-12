@@ -1,2 +1,2 @@
 export * from "./auth-schema"
-export * from "./categoriaSchema"
+export * from "./transactionSchema"

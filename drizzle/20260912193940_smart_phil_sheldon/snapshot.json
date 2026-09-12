@@ -1,18 +1,17 @@
 {
   "version": "8",
   "dialect": "postgres",
-  "id": "1c0f1a55-695e-47ec-93b6-6f20633a058e",
+  "id": "c33775cb-8fec-42fc-85d3-4636ec80d1e4",
   "prevIds": [
-    "f5c65029-9db0-4322-b652-618519cf9770"
+    "00000000-0000-0000-0000-000000000000"
   ],
   "ddl": [
     {
       "values": [
-        "income",
-        "expense",
-        "transfer"
+        "gasto",
+        "ingreso"
       ],
-      "name": "transaction_type",
+      "name": "tipo_transaccion",
       "entityType": "enums",
       "schema": "public"
     },
@@ -42,7 +41,7 @@
     },
     {
       "isRlsEnabled": false,
-      "name": "categoria",
+      "name": "transaction",
       "entityType": "tables",
       "schema": "public"
     },
@@ -497,7 +496,7 @@
       "generated": null,
       "identity": {
         "type": "always",
-        "name": "categoria_id_seq",
+        "name": "transaction_id_seq",
         "increment": "1",
         "startWith": "1",
         "minValue": "1",
@@ -508,7 +507,33 @@
       "name": "id",
       "entityType": "columns",
       "schema": "public",
-      "table": "categoria"
+      "table": "transaction"
+    },
+    {
+      "type": "tipo_transaccion",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "tipo",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "transaction"
+    },
+    {
+      "type": "numeric(10,2)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "monto",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "transaction"
     },
     {
       "type": "varchar(255)",
@@ -518,23 +543,10 @@
       "default": null,
       "generated": null,
       "identity": null,
-      "name": "name",
+      "name": "categoria",
       "entityType": "columns",
       "schema": "public",
-      "table": "categoria"
-    },
-    {
-      "type": "integer",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": null,
-      "generated": null,
-      "identity": null,
-      "name": "type",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "categoria"
+      "table": "transaction"
     },
     {
       "type": "varchar(255)",
@@ -544,10 +556,23 @@
       "default": null,
       "generated": null,
       "identity": null,
-      "name": "createdAt",
+      "name": "descripcion",
       "entityType": "columns",
       "schema": "public",
-      "table": "categoria"
+      "table": "transaction"
+    },
+    {
+      "type": "timestamp",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "transaction"
     },
     {
       "nameExplicit": true,
@@ -691,9 +716,9 @@
         "id"
       ],
       "nameExplicit": false,
-      "name": "categoria_pkey",
+      "name": "transaction_pkey",
       "schema": "public",
-      "table": "categoria",
+      "table": "transaction",
       "entityType": "pks"
     },
     {
@@ -716,17 +741,6 @@
       "name": "user_email_key",
       "schema": "public",
       "table": "user",
-      "entityType": "uniques"
-    },
-    {
-      "nameExplicit": false,
-      "columns": [
-        "createdAt"
-      ],
-      "nullsNotDistinct": false,
-      "name": "categoria_createdAt_key",
-      "schema": "public",
-      "table": "categoria",
       "entityType": "uniques"
     }
   ],

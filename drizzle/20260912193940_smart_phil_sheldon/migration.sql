@@ -1,3 +1,4 @@
+CREATE TYPE "tipo_transaccion" AS ENUM('gasto', 'ingreso');--> statement-breakpoint
 CREATE TABLE "account" (
 	"id" text PRIMARY KEY,
 	"account_id" text NOT NULL,
@@ -42,6 +43,15 @@ CREATE TABLE "verification" (
 	"expires_at" timestamp NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "transaction" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "transaction_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"tipo" "tipo_transaccion" NOT NULL,
+	"monto" numeric(10,2) NOT NULL,
+	"categoria" varchar(255) NOT NULL,
+	"descripcion" varchar(255) NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE INDEX "account_userId_idx" ON "account" ("user_id");--> statement-breakpoint

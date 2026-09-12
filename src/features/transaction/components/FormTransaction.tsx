@@ -4,32 +4,89 @@ import FormComponent from '@/src/components/form/Form'
 import { FormInput } from '@/src/components/form/FormInput'
 import { FormLabel } from '@/src/components/form/FormLabel'
 import { zodResolver } from '@hookform/resolvers/zod'
-import React from 'react'
 import { useForm } from 'react-hook-form'
-import { NewTransactionSchema } from '../schemas/schemas'
+import { NewTransaction, NewTransactionSchema } from '../schemas/schemas'
+import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/react'
+import { listaGastos } from '@/src/category'
+import { FormSubmit } from '@/src/components/form/FormSubmit'
+import { useState } from 'react'
+import clsx from 'clsx'
+import { FormError } from '@/src/components/form/FormError'
 
 export default function FormTransaction() {
-
-    const { register, formState: { errors } } = useForm({
+    const [selectedTab, setSelectedTab] = useState(0);
+    
+    const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<NewTransaction>({
         resolver: zodResolver(NewTransactionSchema),
-        mode: 'onBlur'
-    })
+        mode: 'onBlur',
+        defaultValues: {
+            tipo: 'gasto',
+            monto: '',
+            fecha: '',
+            categoria: '',
+            descripcion: '',
+        }
+    });
 
-  return (
-   <FormComponent className='flex flex-col border border-gray-400 p-4 rounded-lg max-w-xl'>
-        <FormLabel>Monto</FormLabel>
-        <FormInput type='number' min={0} placeholder='$500'  />
+    const currentType = watch('tipo');
 
-        <FormLabel>Categoría</FormLabel>
-        <select name="" id="" className='border border-black rounded-lg p-2'>
-            <option value="">--Selecciona una categoría--</option>
-        </select>
+    const handleTabChange = (index: number)=> {
+        setSelectedTab(index);
+        const tipo = index === 0 ? 'gasto' : 'ingreso';
+        setValue('tipo', tipo )
+        setValue('categoria', '')
+    };
 
-        <FormLabel>Descripción</FormLabel>
-        <textarea className='border border-black rounded-lg p-2' rows={3} placeholder='Compra de videojuego en MercadoLibre' />
+    const handleCreateTransaction = (transaction: NewTransaction)=> {
+        
+    }
 
-        <FormLabel>Fecha</FormLabel>
-        <FormInput type='date' />
-    </FormComponent>
-  )
+    return (
+        <TabGroup selectedIndex={selectedTab} onChange={handleTabChange}>
+            <TabList className='flex w-full justify-around bg-gray-200 rounded-lg '>
+                <Tab className='w-1/2 data-selected:bg-red-500 data-selected:text-white px-4 py-2 rounded-lg'>Gasto</Tab>
+                <Tab className='w-1/2 data-selected:bg-green-500 data-selected:text-white px-4 py-2 rounded-lg'>Ingreso</Tab>
+            </TabList>
+
+            <FormComponent 
+                className='flex flex-col border border-gray-400 p-4 rounded-lg w-md'
+                onSubmit={handleSubmit(handleCreateTransaction)}
+            >
+                <FormLabel>Monto</FormLabel>
+                <FormInput {...register('monto')} type='number' min={0} placeholder='$500' />
+                {errors.monto && <FormError>{errors.monto.message}</FormError>}
+
+                <FormLabel>Categoría</FormLabel>
+                <select {...register('categoria')} className='border border-black rounded-lg p-2'>
+                    <option value="">--Selecciona una categoría--</option>
+                    {
+                        listaGastos.map((category)=> (
+                            <option key={category.id} value={category.value}>
+                                {category.nombre}
+                            </option>
+                        ))
+                    }
+                </select>
+                {errors.categoria && <FormError>{errors.categoria.message}</FormError>}
+
+                <FormLabel>Descripción</FormLabel>
+                <textarea {...register('descripcion')} className='border border-black rounded-lg p-2' rows={3} placeholder='Compra de videojuego en MercadoLibre' />
+                {errors.descripcion && <FormError>{errors.descripcion.message}</FormError>}
+
+                <FormLabel>Fecha</FormLabel>
+                <FormInput {...register('fecha')} type='date' />
+                {errors.fecha && <FormError>{errors.fecha.message}</FormError>}
+
+                <FormSubmit className={clsx('', 
+                    currentType === 'gasto' && 'bg-red-500 hover:bg-red-400',
+                    currentType === 'ingreso' && 'bg-green-500 hover:bg-green-400'
+                )}>
+                    { currentType === 'gasto' 
+                        ? 'Agregar Gato'
+                        : 'Añadir Ingreso'
+                    }
+                </FormSubmit>
+            </FormComponent>            
+        </TabGroup>
+    )
 }

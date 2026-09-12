@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@better-auth/drizzle-adapter": "^1.7.3",
+    "@headlessui/react": "^2.2.10",
     "@hookform/resolvers": "^5.9.1",
     "@neondatabase/serverless": "^1.1.0",
     "@tabler/icons-react": "^3.46.0",
