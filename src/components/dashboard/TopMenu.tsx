@@ -8,7 +8,7 @@ export default function TopMenu() {
   const pathname = usePathname();
 
   return (
-    <nav className='flex items-center justify-between p-4 rounded-lg '>
+    <menu className='flex items-center justify-between p-4 rounded-lg '>
       <li className='list-none'>
         <Link 
           href={'/home'} 
@@ -40,6 +40,6 @@ export default function TopMenu() {
           Gráficos
         </Link>
       </li>
-    </nav>
+    </menu>
   )
 }
