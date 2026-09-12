@@ -1,7 +1,10 @@
 import z from "zod";
-import { SignUpSchema } from "../schema/schema";
+import { SignInSchema, SignUpSchema } from "../schema/schema";
 import { user } from "@/src/db/schema/auth-schema";
 
 export type UserAccount = z.infer<typeof  SignUpSchema>;
+export type SignIn = z.infer<typeof  SignInSchema>;
+
+
 export type UserInsert = typeof user.$inferInsert;
 export type UserSelect = typeof user.$inferSelect;

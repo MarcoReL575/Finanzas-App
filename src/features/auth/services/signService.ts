@@ -1,7 +1,8 @@
-import { UserAccount, UserInsert } from "../types/types";
+import { SignIn, UserAccount, UserInsert } from "../types/types";
 import { ISignRepository, signRepository } from "./signRepository";
 import { insertUserSchema, SignUpSchema } from "../schema/schema";
 import { auth } from "@/src/lib/auth";
+import { UserSession } from "@/src/lib/authServer";
 
 class SignService {
     constructor (
@@ -9,7 +10,6 @@ class SignService {
     ) {}
 
     async signUp(userInfo: UserAccount) {
-        console.log(userInfo)
         try {
             await auth.api.signUpEmail({
                 body: {
@@ -22,6 +22,25 @@ class SignService {
         } catch (error) {
             console.log(error)
             return { success: false, message: 'Error al crear usuario'}
+        }
+    }
+
+    async signIn(userInfo: SignIn) {
+        const { password, email } = userInfo;
+        const userExists = signRepository.selectUser(userInfo);
+        if(!userExists) return { success: false, message: 'El usuario no existe' }
+
+        try {
+            await auth.api.signInEmail({
+                body: {
+                    email,
+                    password
+                },
+                asResponse: true
+            })
+            return { success: true, message: `Bienvenido de nuevo ${(await userExists).name}`}
+        } catch (error) {
+            return { success: false, message: 'Error al iniciar sesión' }
         }
     }
 

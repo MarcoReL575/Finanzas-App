@@ -12,4 +12,9 @@ export const SignUpSchema = z.object({
     path: ["confirmPassword"]
 })
 
+export const SignInSchema = z.object({
+    email: z.string().min(1, {message: 'El correo no puede ir vacío'}),
+    password: z.string().min(6, {message: 'El password no puede tener menos de 6 caracteres'}),
+})
+
 export const insertUserSchema = createInsertSchema(user);
