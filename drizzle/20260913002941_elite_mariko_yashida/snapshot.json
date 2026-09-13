@@ -1,7 +1,7 @@
 {
   "version": "8",
   "dialect": "postgres",
-  "id": "c33775cb-8fec-42fc-85d3-4636ec80d1e4",
+  "id": "1a066daf-c0f3-40dc-b953-fd6b6dbeded2",
   "prevIds": [
     "00000000-0000-0000-0000-000000000000"
   ],
@@ -575,6 +575,19 @@
       "table": "transaction"
     },
     {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "userId",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "transaction"
+    },
+    {
       "nameExplicit": true,
       "columns": [
         {
@@ -670,6 +683,23 @@
       "entityType": "fks",
       "schema": "public",
       "table": "session"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "userId"
+      ],
+      "schemaTo": "public",
+      "tableTo": "user",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "name": "transaction_userId_user_id_fkey",
+      "entityType": "fks",
+      "schema": "public",
+      "table": "transaction"
     },
     {
       "columns": [

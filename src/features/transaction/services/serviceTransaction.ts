@@ -1,0 +1,19 @@
+import { InsertTransaction } from "../types/types";
+import { IransactionRepository, transactionRepository } from "./repositoryTransaction";
+
+class TransactionService {
+    constructor(
+        private transactionRepository: IransactionRepository
+    ){}
+
+    async addTransaction(transaction: InsertTransaction, userId: string) {
+        try {
+            await this.transactionRepository.insertTransaction(transaction, userId);
+            return { success: true, message: 'Transacción agregada' }
+        } catch (error) {
+            return { success: false, message: 'Error al crear la transacción' }
+        }
+    }
+}
+
+export const transactionService = new TransactionService(transactionRepository)

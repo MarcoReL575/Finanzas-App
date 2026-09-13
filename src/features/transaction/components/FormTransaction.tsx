@@ -1,28 +1,28 @@
 'use client'
 
-import FormComponent from '@/src/components/form/Form'
-import { FormInput } from '@/src/components/form/FormInput'
-import { FormLabel } from '@/src/components/form/FormLabel'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { NewTransaction, NewTransactionSchema } from '../schemas/schemas'
-import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/react'
-import { listaGastos } from '@/src/category'
-import { FormSubmit } from '@/src/components/form/FormSubmit'
+import { redirect } from 'next/navigation'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { TabGroup, TabList, Tab } from '@headlessui/react'
 import clsx from 'clsx'
-import { FormError } from '@/src/components/form/FormError'
+import { insertTransactionSchema } from '../schemas/schemas'
+import { listaGastos } from '@/src/category'
+import { InsertTransaction } from '../types/types'
+import { createTransactionAction } from '../actions/transactionActions'
+import { FormError, FormComponent, FormInput, FormLabel, FormSubmit } from '@/src/components/form'
 
 export default function FormTransaction() {
     const [selectedTab, setSelectedTab] = useState(0);
     
-    const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<NewTransaction>({
-        resolver: zodResolver(NewTransactionSchema),
+    const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<InsertTransaction>({
+        resolver: zodResolver(insertTransactionSchema),
         mode: 'onBlur',
         defaultValues: {
             tipo: 'gasto',
             monto: '',
-            fecha: '',
+            createdAt: new Date(),
             categoria: '',
             descripcion: '',
         }
@@ -37,8 +37,16 @@ export default function FormTransaction() {
         setValue('categoria', '')
     };
 
-    const handleCreateTransaction = (transaction: NewTransaction)=> {
-        
+    const handleCreateTransaction = async(transaction: InsertTransaction)=> {
+        console.log(transaction)
+        const { success, message } = await createTransactionAction(transaction);
+        if(!success) {
+            toast.error(message);
+        }
+        if(success) {
+            toast.success(message);
+            redirect('/home');
+        }
     }
 
     return (
@@ -74,8 +82,8 @@ export default function FormTransaction() {
                 {errors.descripcion && <FormError>{errors.descripcion.message}</FormError>}
 
                 <FormLabel>Fecha</FormLabel>
-                <FormInput {...register('fecha')} type='date' />
-                {errors.fecha && <FormError>{errors.fecha.message}</FormError>}
+                <FormInput {...register('createdAt')} type='date' />
+                {errors.createdAt && <FormError>{errors.createdAt.message}</FormError>}
 
                 <FormSubmit className={clsx('', 
                     currentType === 'gasto' && 'bg-red-500 hover:bg-red-400',

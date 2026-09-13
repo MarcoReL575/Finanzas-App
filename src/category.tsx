@@ -104,5 +104,11 @@ export const listaGastos: ListaGatos = [
         "nombre": "Viajes o vacaciones",
         "value": "vacaciones",
         "icon": <IconHome />
+    },
+    {
+        "id": 17,
+        "nombre": "Sueldo o ingreso",
+        "value": "sueldo",
+        "icon": <IconHome />
     }
 ]

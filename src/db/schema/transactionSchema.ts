@@ -1,4 +1,5 @@
-import { integer, pgEnum, pgTable, varchar, numeric, timestamp } from "drizzle-orm/pg-core";
+import { integer, pgEnum, pgTable, varchar, numeric, timestamp, text } from "drizzle-orm/pg-core";
+import { user } from "./auth-schema";
 
 export const tipoTransaccionEnum = pgEnum('tipo_transaccion', ['gasto', 'ingreso']);
 
@@ -9,4 +10,5 @@ export const transactionSchema = pgTable("transaction", {
     categoria: varchar({ length: 255 }).notNull(),
     descripcion: varchar({ length: 255 }).notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
+    userId: text("userId").primaryKey().references(() => user.id, { onDelete: "cascade" }),
 });
