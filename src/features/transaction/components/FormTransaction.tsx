@@ -11,7 +11,7 @@ import { insertTransactionSchema } from '../schemas/schemas'
 import { listaGastos } from '@/src/category'
 import { InsertTransaction } from '../types/types'
 import { createTransactionAction } from '../actions/transactionActions'
-import { FormError, FormComponent, FormInput, FormLabel, FormSubmit } from '@/src/components/form'
+import { FormError, FormComponent, FormInput, FormLabel, FormSubmit } from '@/src/shared/components/form'
 
 export default function FormTransaction() {
     const [selectedTab, setSelectedTab] = useState(0);
@@ -50,14 +50,14 @@ export default function FormTransaction() {
     }
 
     return (
-        <TabGroup selectedIndex={selectedTab} onChange={handleTabChange}>
+        <TabGroup selectedIndex={selectedTab} onChange={handleTabChange} className='max-w-xl'>
             <TabList className='flex w-full justify-around bg-gray-200 rounded-lg '>
                 <Tab className='w-1/2 data-selected:bg-red-500 data-selected:text-white px-4 py-2 rounded-lg'>Gasto</Tab>
                 <Tab className='w-1/2 data-selected:bg-green-500 data-selected:text-white px-4 py-2 rounded-lg'>Ingreso</Tab>
             </TabList>
 
             <FormComponent 
-                className='flex flex-col border border-gray-400 p-4 rounded-lg w-md'
+                className='flex flex-col p-4 w-md'
                 onSubmit={handleSubmit(handleCreateTransaction)}
             >
                 <FormLabel>Monto</FormLabel>

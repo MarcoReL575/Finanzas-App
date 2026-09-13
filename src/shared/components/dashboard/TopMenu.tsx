@@ -8,18 +8,18 @@ export default function TopMenu() {
   const pathname = usePathname();
 
   return (
-    <menu className='flex items-center justify-between gap-x-4 rounded-lg '>
+    <menu className='flex items-center justify-between gap-x-2 rounded-lg text-md '>
       <li className='list-none'>
         <Link 
           href={'/home'} 
-          className={`border border-gray-500 p-2 rounded-lg ${pathname === '/home'? 'bg-white text-black': ''}`}>
+          className={`border border-gray-500 p-1 rounded-lg ${pathname === '/home'? 'bg-white text-black': ''}`}>
           Home
         </Link>
       </li>
       <li className='list-none'>
         <Link 
           href={'/gastos'} 
-          className={`border border-gray-500 p-2 rounded-lg ${pathname === '/gastos'? 'bg-white text-black': ''}`}
+          className={`border border-gray-500 p-1 rounded-lg ${pathname === '/gastos'? 'bg-white text-black': ''}`}
         >
           Gastos
         </Link>
@@ -27,7 +27,7 @@ export default function TopMenu() {
       <li className='list-none'>
         <Link 
           href={'/ingresos'} 
-          className={`border border-gray-500 p-2 rounded-lg ${pathname === '/ingresos'? 'bg-white text-black': ''}`}
+          className={`border border-gray-500 p-1 rounded-lg ${pathname === '/ingresos'? 'bg-white text-black': ''}`}
         >
             Ingresos
         </Link>
@@ -35,7 +35,7 @@ export default function TopMenu() {
       <li className='list-none'>
         <Link 
           href={'/graficos'} 
-          className={`border border-gray-500 p-2 rounded-lg ${pathname === '/graficos'? 'bg-white text-black': ''}`}
+          className={`border border-gray-500 p-1 rounded-lg ${pathname === '/graficos'? 'bg-white text-black': ''}`}
         >
           Gráficos
         </Link>

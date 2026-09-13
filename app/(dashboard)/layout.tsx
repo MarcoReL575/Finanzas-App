@@ -1,4 +1,4 @@
-import HeaderApp from "@/src/components/dashboard/HeaderApp"
+import HeaderApp from "@/src/shared/components/dashboard/HeaderApp"
 
 type Props = {
     children: React.ReactNode

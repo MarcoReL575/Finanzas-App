@@ -1,4 +1,4 @@
-import ButtonAddTransaction from '@/src/components/ButtonAddTransaction'
+import ButtonAddTransaction from '@/src/shared/components/ButtonAddTransaction'
 import React from 'react'
 
 export default function GastosPage() {

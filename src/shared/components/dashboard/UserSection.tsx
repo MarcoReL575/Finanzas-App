@@ -14,7 +14,7 @@ export default async function UserSection() {
     const userName = name.slice(0,2);
 
   return (
-    <div className='flex items-center justify-between border rounded-lg pl-2 gap-x-4 h-14'>
+    <div className='flex items-center justify-between border rounded-lg pl-2 gap-x-4 h-12'>
         <div>
             <div className='border border-gray-400 rounded-full flex items-center justify-center size-8'>
                 {userName}
