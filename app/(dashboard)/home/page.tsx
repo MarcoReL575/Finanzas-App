@@ -2,6 +2,7 @@ import ButtonAddTransaction from '@/src/features/transaction/components/ButtonAd
 import GridTransactions from '@/src/features/transaction/components/GridTransactions'
 import { transactionService } from '@/src/features/transaction/services/serviceTransaction'
 import { UserSession } from '@/src/lib/authServer'
+import { MyDatePicker } from '@/src/shared/components/MyDatePicker'
 import { redirect } from 'next/navigation'
 import React from 'react'
 
@@ -16,6 +17,10 @@ export default async function HomePage() {
   return (
     <section className=' flex flex-col w-full space-y-4'>
       <ButtonAddTransaction />
+      <h2 className='text-xl font-semibold'>Lista de Transacciones</h2>
+      <div>
+        <MyDatePicker />
+      </div>
       <GridTransactions transactions={transactions} />
     </section>
   )
