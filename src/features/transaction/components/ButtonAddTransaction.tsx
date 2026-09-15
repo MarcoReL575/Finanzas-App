@@ -14,7 +14,7 @@ export default function ButtonAddTransaction() {
   return (
     <>
         <button 
-            className='bg-green-500 flex items-center gap-x-2 text-white px-4 py-2 rounded-lg hover:bg-green-400 cursor-pointer'
+            className='bg-green-500 w-fit flex items-center gap-x-2 text-white px-4 py-2 rounded-lg hover:bg-green-400 cursor-pointer'
             onClick={() =>toggleModal(true)}
         >
             <IconCirclePlus />

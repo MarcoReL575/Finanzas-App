@@ -1,9 +1,11 @@
 import { db } from "@/src/db"
 import { transactionSchema } from "@/src/db/schema"
-import { InsertTransaction } from "../types/types"
+import { InsertTransaction, SelectTransaction } from "../types/types"
+import { eq } from "drizzle-orm";
 
 export interface IransactionRepository {
-    insertTransaction(transaction: InsertTransaction, userId: string): Promise<void>
+    insertTransaction(transaction: InsertTransaction, userId: string): Promise<void>;
+    selectTransactionsUser(userId: string): Promise<SelectTransaction[]>;
 }
 
 class TransactionRepository implements IransactionRepository {
@@ -14,6 +16,14 @@ class TransactionRepository implements IransactionRepository {
                 ...transaction,
                 userId
             })
+    }
+
+    async selectTransactionsUser(userId: string): Promise<SelectTransaction[]> {
+        const result = await db
+            .select()
+            .from(transactionSchema)
+            .where(eq(transactionSchema.userId, userId))
+        return result;
     }
 }
 

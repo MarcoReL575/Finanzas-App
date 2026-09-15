@@ -14,6 +14,15 @@ class TransactionService {
             return { success: false, message: 'Error al crear la transacción' }
         }
     }
+
+    async getTransactionsByUser(userId: string) {
+        try {
+            const transactions = await this.transactionRepository.selectTransactionsUser(userId);
+            return { success: true, message: '',  transactions}
+        } catch (error) {
+            return { success: false, message: 'Error al obtener los datos', transactions: [] }
+        }
+    }
 }
 
 export const transactionService = new TransactionService(transactionRepository)
