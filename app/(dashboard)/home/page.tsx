@@ -3,8 +3,10 @@ import GridTransactions from '@/src/features/transaction/components/GridTransact
 import { transactionService } from '@/src/features/transaction/services/serviceTransaction'
 import { UserSession } from '@/src/lib/authServer'
 import { redirect } from 'next/navigation'
-import React from 'react'
 import { FilterMyDatePicker } from '../../../src/features/transaction/components/FilterMyDatePicker'
+import FilerSelectTransaction from '@/src/features/transaction/components/FilerSelectTransaction'
+import FilterCategories from '@/src/features/transaction/components/FilterCategories'
+import FilterReset from '@/src/features/transaction/components/FilterReset'
 
 export default async function HomePage() {
 
@@ -15,11 +17,14 @@ export default async function HomePage() {
 
 
   return (
-    <section className=' flex flex-col w-full space-y-4'>
+    <section className='flex flex-col w-full space-y-4 max-w-6xl mx-auto'>
       <ButtonAddTransaction />
       <h2 className='text-xl font-semibold'>Lista de Transacciones</h2>
-      <div>
+      <div className='flex items-center justify-around max-w-2xl mx-auto gap-x-4'>
         <FilterMyDatePicker />
+        <FilerSelectTransaction />
+        <FilterCategories />
+        <FilterReset />
       </div>
       <GridTransactions transactions={transactions} />
     </section>
