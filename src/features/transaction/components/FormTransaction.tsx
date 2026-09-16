@@ -12,8 +12,10 @@ import { listaGastos } from '@/src/category'
 import { InsertTransaction } from '../types/types'
 import { createTransactionAction } from '../actions/transactionActions'
 import { FormError, FormComponent, FormInput, FormLabel, FormSubmit } from '@/src/shared/components/form'
+import { modalStore } from '@/src/shared/stores/modalStore'
 
 export default function FormTransaction() {
+    const toggleModal = modalStore((state)=> state.toggleModal);
     const [selectedTab, setSelectedTab] = useState(0);
     
     const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<InsertTransaction>({
@@ -44,6 +46,7 @@ export default function FormTransaction() {
             toast.error(message);
         }
         if(success) {
+            toggleModal(false);
             toast.success(message);
             redirect('/home');
         }
@@ -70,7 +73,7 @@ export default function FormTransaction() {
                     {
                         listaGastos.map((category)=> (
                             <option key={category.id} value={category.value}>
-                                {category.nombre}
+                                {category.label}
                             </option>
                         ))
                     }

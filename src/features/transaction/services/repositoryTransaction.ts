@@ -1,7 +1,7 @@
 import { db } from "@/src/db"
 import { transactionSchema } from "@/src/db/schema"
 import { InsertTransaction, SelectTransaction } from "../types/types"
-import { eq } from "drizzle-orm";
+import { asc, desc, eq } from "drizzle-orm";
 
 export interface IransactionRepository {
     insertTransaction(transaction: InsertTransaction, userId: string): Promise<void>;
@@ -23,6 +23,7 @@ class TransactionRepository implements IransactionRepository {
             .select()
             .from(transactionSchema)
             .where(eq(transactionSchema.userId, userId))
+            .orderBy(desc(transactionSchema.createdAt))
         return result;
     }
 }

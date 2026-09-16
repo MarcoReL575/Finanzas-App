@@ -1,20 +1,25 @@
+import { redirect } from 'next/navigation'
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
+import { UserSession } from '@/src/lib/authServer'
 import ButtonAddTransaction from '@/src/features/transaction/components/ButtonAddTransaction'
 import GridTransactions from '@/src/features/transaction/components/GridTransactions'
 import { transactionService } from '@/src/features/transaction/services/serviceTransaction'
-import { UserSession } from '@/src/lib/authServer'
-import { redirect } from 'next/navigation'
 import { FilterMyDatePicker } from '../../../src/features/transaction/components/FilterMyDatePicker'
 import FilerSelectTransaction from '@/src/features/transaction/components/FilerSelectTransaction'
 import FilterCategories from '@/src/features/transaction/components/FilterCategories'
 import FilterReset from '@/src/features/transaction/components/FilterReset'
 
 export default async function HomePage() {
+  const queryClient = new QueryClient();
 
   const session = await UserSession();
   if(!session?.user.id) redirect('/auth/signin');
 
-  const { transactions } = await transactionService.getTransactionsByUser(session.user.id);
 
+  await queryClient.query({
+    queryKey: ['transactions', { userId: session.user.id }],
+    queryFn: () => transactionService.getTransactionsByUser(session.user.id),
+  })
 
   return (
     <section className='flex flex-col w-full space-y-4 max-w-6xl mx-auto'>
@@ -26,7 +31,9 @@ export default async function HomePage() {
         <FilterCategories />
         <FilterReset />
       </div>
-      <GridTransactions transactions={transactions} />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <GridTransactions userId={session.user.id} />
+      </HydrationBoundary>
     </section>
   )
 }

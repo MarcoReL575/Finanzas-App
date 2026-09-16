@@ -19,10 +19,10 @@ export default function CardTransaction({ transaction }: Props) {
                 </span>
                 <div className=''>
                     <h2 className='text-xl capitalize'>
-                        {transaction.tipo}
+                        {transaction.categoria}
                     </h2>
                     <p className='text-gray-400 capitalize'>
-                        {transaction.categoria}
+                        {transaction.tipo}
                     </p>
                 </div>
             </div>

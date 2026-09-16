@@ -1,4 +1,4 @@
-import { InsertTransaction } from "../types/types";
+import { InsertTransaction, SelectTransaction } from "../types/types";
 import { IransactionRepository, transactionRepository } from "./repositoryTransaction";
 
 class TransactionService {
@@ -18,9 +18,9 @@ class TransactionService {
     async getTransactionsByUser(userId: string) {
         try {
             const transactions = await this.transactionRepository.selectTransactionsUser(userId);
-            return { success: true, message: '',  transactions}
+            return transactions
         } catch (error) {
-            return { success: false, message: 'Error al obtener los datos', transactions: [] }
+            return [] as SelectTransaction[]
         }
     }
 }
