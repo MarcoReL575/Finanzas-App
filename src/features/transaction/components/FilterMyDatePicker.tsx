@@ -6,7 +6,7 @@ import { DateRange, DayPicker } from "@daypicker/react";
 import "@daypicker/react/style.css";
 import { IconCalendar } from "@tabler/icons-react";
 
-export function MyDatePicker() {
+export function FilterMyDatePicker() {
 
   const [range, setRange] = useState<DateRange | undefined>();
   const [open, setOpen] = useState<boolean>(false);
@@ -34,7 +34,12 @@ export function MyDatePicker() {
               mode="range"
               selected={range}
               onSelect={setRange}
-              className="w-fit p-4 bg-white border-2 border-r-blue-600 rounded-lg"
+              navLayout="around"
+              className="w-fit text-xs text-gray-600 p-4 bg-white border-2 border-r-blue-600 rounded-lg"
+              styles={{
+                day: { width: '28px', height: '28px' },
+                day_button: { width: '26px', height: '26px' },
+              }}
               resetOnSelect={true}
             />
           </div>
