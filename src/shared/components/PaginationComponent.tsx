@@ -83,7 +83,7 @@ export default function PaginationComponent({ limit, page, data, isPlaceholderDa
 
 
   return (
-    <Pagination>
+    <Pagination className='flex justify-center'>
         <PaginationContent>
             <PaginationItem>
                 <PaginationPrevious 

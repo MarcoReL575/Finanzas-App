@@ -10,8 +10,11 @@ import FilterCategories from '@/src/features/transaction/components/FilterCatego
 import FilterReset from '@/src/features/transaction/components/FilterReset'
 
 interface Props {
-  searchParams: Promise<{ page?: string }>
+  searchParams: Promise<{ page?: string; limit?: string }>
 }
+
+const DEFAULT_LIMIT = 3;
+const ALLOWED_LIMITS = [3, 5, 10, 15, 20];
 
 export default async function HomePage({ searchParams }: Props) {
   const queryClient = new QueryClient();
@@ -22,7 +25,9 @@ export default async function HomePage({ searchParams }: Props) {
   //Leemos la página actual desde la URL
   const params = await searchParams;
   const page = Number(params.page) || 1;
-  const limit = 3; // Tamaño de página
+
+  const requestedLimit = Number(params.limit);
+  const limit = ALLOWED_LIMITS.includes(requestedLimit) ? requestedLimit : DEFAULT_LIMIT;
 
   await queryClient.query({
     queryKey: ['transactions', { userId: session.user.id, page, limit }],
