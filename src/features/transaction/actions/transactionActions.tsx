@@ -1,7 +1,7 @@
 'use server'
 
 import { UserSession } from "@/src/lib/authServer"
-import { InsertTransaction, SelectTransaction } from "../types/types";
+import { InsertTransaction, PaginationParams, SelectTransaction } from "../types/types";
 import { transactionService } from "../services/serviceTransaction";
 
 export async function createTransactionAction(transaction: InsertTransaction) {
@@ -11,9 +11,6 @@ export async function createTransactionAction(transaction: InsertTransaction) {
     return await transactionService.addTransaction(transaction, session.user.id);
 }
 
-export async function getTransactionByUserAction(userId: string) {
-    const session = await UserSession();
-    if(!session?.user.id) return [] as SelectTransaction[]
-
-    return await transactionService.getTransactionsByUser(userId);
+export async function getTransactionByUserAction(userId: string, { page, limit }: PaginationParams) {
+    return await transactionService.getTransactionsByUser(userId, { page: page, limit });
 }

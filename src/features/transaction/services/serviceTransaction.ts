@@ -1,4 +1,4 @@
-import { InsertTransaction, SelectTransaction } from "../types/types";
+import { InsertTransaction, PaginatedResult, PaginationParams, SelectTransaction } from "../types/types";
 import { IransactionRepository, transactionRepository } from "./repositoryTransaction";
 
 class TransactionService {
@@ -15,12 +15,12 @@ class TransactionService {
         }
     }
 
-    async getTransactionsByUser(userId: string) {
+    async getTransactionsByUser(userId: string, { page, limit }: PaginationParams) {
         try {
-            const transactions = await this.transactionRepository.selectTransactionsUser(userId);
+            const transactions = await this.transactionRepository.selectTransactionsUser(userId, { page: page, limit });
             return transactions
         } catch (error) {
-            return [] as SelectTransaction[]
+            return {} as PaginatedResult<SelectTransaction>
         }
     }
 }

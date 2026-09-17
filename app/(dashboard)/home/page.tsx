@@ -9,16 +9,24 @@ import FilerSelectTransaction from '@/src/features/transaction/components/FilerS
 import FilterCategories from '@/src/features/transaction/components/FilterCategories'
 import FilterReset from '@/src/features/transaction/components/FilterReset'
 
-export default async function HomePage() {
+interface Props {
+  searchParams: Promise<{ page?: string }>
+}
+
+export default async function HomePage({ searchParams }: Props) {
   const queryClient = new QueryClient();
 
   const session = await UserSession();
   if(!session?.user.id) redirect('/auth/signin');
 
+  //Leemos la página actual desde la URL
+  const params = await searchParams;
+  const page = Number(params.page) || 1;
+  const limit = 3; // Tamaño de página
 
   await queryClient.query({
-    queryKey: ['transactions', { userId: session.user.id }],
-    queryFn: () => transactionService.getTransactionsByUser(session.user.id),
+    queryKey: ['transactions', { userId: session.user.id, page, limit }],
+    queryFn: () => transactionService.getTransactionsByUser(session.user.id, {page, limit}),
   })
 
   return (
@@ -32,7 +40,11 @@ export default async function HomePage() {
         <FilterReset />
       </div>
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <GridTransactions userId={session.user.id} />
+        <GridTransactions 
+          userId={session.user.id} 
+          page={page} 
+          limit={limit}
+        />
       </HydrationBoundary>
     </section>
   )
