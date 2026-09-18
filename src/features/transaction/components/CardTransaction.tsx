@@ -1,8 +1,7 @@
 import { SelectTransaction } from '../types/types'
-import { IconDotsCircleHorizontal, IconDotsVertical } from '@tabler/icons-react'
 import { listaGastos } from '@/src/category'
 import { formatDate } from '@/src/shared/helper/formatDate'
-import { Button } from '@/src/shared/ui/button'
+import DropdownActions from './DropdownActions'
 
 interface Props {
     transaction: SelectTransaction
@@ -28,13 +27,13 @@ export default function CardTransaction({ transaction }: Props) {
                 </div>
             </div>
             <div className='flex items-center space-x-2 justify-center'>
-                <p className={`${transaction.tipo === 'gasto' ? 'text-red-500' : 'text-green-500'}`}>
+                <p className={`${transaction.tipo === 'gasto' ? 'text-red-500' : 'text-green-500'} tabular-nums mmin-w-[80px]`}>
                     {transaction.tipo === 'gasto' ? '-' : '+'}
                     ${transaction.monto}
                 </p>
-                <Button variant='ghost' className='cursor-pointer hover:scale-110 transition-all duration-300'>
-                    <IconDotsCircleHorizontal className='hover:text-gray-600 text-gray-800 size-8' />
-                </Button>
+                <div className='flex items-center'>
+                    <DropdownActions />
+                </div>
             </div>
         </div>
         <div className='w-full flex items-center justify-end text-gray-500 text-xs'>
