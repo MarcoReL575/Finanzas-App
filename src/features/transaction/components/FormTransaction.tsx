@@ -14,12 +14,12 @@ import { createTransactionAction } from '../actions/transactionActions'
 import { FormError, FormComponent, FormInput, FormLabel, FormSubmit } from '@/src/shared/components/form'
 import { modalStore } from '@/src/shared/stores/modalStore'
 import { useTransactionStore } from '@/src/shared/stores/useTransactionStore'
-import { formatDate } from '@/src/shared/helper/formatDate'
+import { formatDateToInput } from '@/src/shared/helper/formatDateToInput'
 
 export default function FormTransaction() {
     const toggleModal = modalStore((state)=> state.toggleModal);
-    const [selectedTab, setSelectedTab] = useState(0);
     const transaction = useTransactionStore((state)=> state.transaction);
+    const [selectedTab, setSelectedTab] = useState(transaction.tipo === 'gasto' ? 0 : 1);
     
     const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = 
     useForm<InsertFormTransactionInput, any, InsertFormTransaction>({
@@ -28,7 +28,7 @@ export default function FormTransaction() {
         defaultValues: {
             tipo: transaction.tipo?? 'gasto',
             monto: transaction.monto? transaction.monto / 100 : 0,
-            createdAt: formatDate(transaction.createdAt) ?? formatDate(new Date()),
+            createdAt: formatDateToInput(transaction.createdAt),
             categoria: transaction.categoria ?? '',
             descripcion: transaction.descripcion ?? '',
         }
