@@ -7,26 +7,30 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { TabGroup, TabList, Tab } from '@headlessui/react'
 import clsx from 'clsx'
-import { insertTransactionSchema } from '../schemas/schemas'
+import { InsertFormTransactionInput, InsertFormTransactionSchema } from '../schemas/schemas'
 import { listaGastos } from '@/src/category'
-import { InsertTransaction } from '../types/types'
+import { InsertFormTransaction } from '../types/types'
 import { createTransactionAction } from '../actions/transactionActions'
 import { FormError, FormComponent, FormInput, FormLabel, FormSubmit } from '@/src/shared/components/form'
 import { modalStore } from '@/src/shared/stores/modalStore'
+import { useTransactionStore } from '@/src/shared/stores/useTransactionStore'
+import { formatDate } from '@/src/shared/helper/formatDate'
 
 export default function FormTransaction() {
     const toggleModal = modalStore((state)=> state.toggleModal);
     const [selectedTab, setSelectedTab] = useState(0);
+    const transaction = useTransactionStore((state)=> state.transaction);
     
-    const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<InsertTransaction>({
-        resolver: zodResolver(insertTransactionSchema),
+    const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = 
+    useForm<InsertFormTransactionInput, any, InsertFormTransaction>({
+        resolver: zodResolver(InsertFormTransactionSchema),
         mode: 'onBlur',
         defaultValues: {
-            tipo: 'gasto',
-            monto: '',
-            createdAt: new Date(),
-            categoria: '',
-            descripcion: '',
+            tipo: transaction.tipo?? 'gasto',
+            monto: transaction.monto? transaction.monto / 100 : 0,
+            createdAt: formatDate(transaction.createdAt) ?? formatDate(new Date()),
+            categoria: transaction.categoria ?? '',
+            descripcion: transaction.descripcion ?? '',
         }
     });
 
@@ -39,9 +43,13 @@ export default function FormTransaction() {
         setValue('categoria', '')
     };
 
-    const handleCreateTransaction = async(transaction: InsertTransaction)=> {
-        console.log(transaction)
-        const { success, message } = await createTransactionAction(transaction);
+    const handleCreateTransaction = async(transaction: InsertFormTransaction)=> {
+        const montoEnCentavos = Math.round(transaction.monto * 100);
+        const objectTransaction = {
+            ...transaction,
+            monto: montoEnCentavos,
+        }
+        const { success, message } = await createTransactionAction(objectTransaction);
         if(!success) {
             toast.error(message);
         }

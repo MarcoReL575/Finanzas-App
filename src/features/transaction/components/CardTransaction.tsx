@@ -2,6 +2,7 @@ import { SelectTransaction } from '../types/types'
 import { listaGastos } from '@/src/category'
 import { formatDate } from '@/src/shared/helper/formatDate'
 import DropdownActions from './DropdownActions'
+import { formatCurrency } from '@/src/shared/helper/formatCurrency'
 
 interface Props {
     transaction: SelectTransaction
@@ -9,6 +10,7 @@ interface Props {
 
 export default function CardTransaction({ transaction }: Props) {
     const findTransaction = listaGastos.find((gasto)=> gasto.value === transaction.categoria);
+    const monto = formatCurrency(transaction.monto);
 
   return (
     <li className='flex flex-col justify-around border border-gray-500 rounded-lg p-4 w-lg mx-auto'>
@@ -22,17 +24,17 @@ export default function CardTransaction({ transaction }: Props) {
                         {transaction.categoria}
                     </h2>
                     <p className='text-gray-400 capitalize'>
-                        {transaction.tipo}
+                        {transaction.descripcion}
                     </p>
                 </div>
             </div>
             <div className='flex items-center space-x-2 justify-center'>
                 <p className={`${transaction.tipo === 'gasto' ? 'text-red-500' : 'text-green-500'} tabular-nums mmin-w-[80px]`}>
                     {transaction.tipo === 'gasto' ? '-' : '+'}
-                    ${transaction.monto}
+                    {monto}
                 </p>
                 <div className='flex items-center'>
-                    <DropdownActions />
+                    <DropdownActions transaction={transaction} />
                 </div>
             </div>
         </div>

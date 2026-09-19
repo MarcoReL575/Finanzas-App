@@ -1,25 +1,22 @@
 import { db } from "@/src/db"
 import { transactionSchema } from "@/src/db/schema"
 import { InsertTransaction, PaginatedResult, PaginationParams, SelectTransaction } from "../types/types"
-import { asc, count, desc, eq } from "drizzle-orm";
+import { and, asc, count, desc, eq } from "drizzle-orm";
 
 export interface IransactionRepository {
-    insertTransaction(transaction: InsertTransaction, userId: string): Promise<void>;
+    insertTransaction(transaction: InsertTransaction): Promise<void>;
     selectTransactionsUser(userId: string, { page, limit }: PaginationParams): Promise<PaginatedResult<SelectTransaction>>;
+    selectSingleTransaction(userId: string, transactionId: number): Promise<SelectTransaction>;
 }
 
 class TransactionRepository implements IransactionRepository {
-    async insertTransaction(transaction: InsertTransaction, userId: string): Promise<void> {
+    async insertTransaction(transaction: InsertTransaction): Promise<void> {
         await db
             .insert(transactionSchema)
-            .values({
-                ...transaction,
-                userId
-            })
+            .values(transaction)
     }
 
     async selectTransactionsUser(userId: string, { page, limit }: PaginationParams): Promise<PaginatedResult<SelectTransaction>> {
-        console.log({page, limit})
         const offset = (page - 1) * limit;
         const [items, totalResult] = await Promise.all([
             db
@@ -44,6 +41,17 @@ class TransactionRepository implements IransactionRepository {
             page,
             limit,
         }
+    }
+
+    async selectSingleTransaction(userId: string, transactionId: number): Promise<SelectTransaction> {
+        const [result] = await db
+            .select()
+            .from(transactionSchema)
+            .where(and(
+                eq(transactionSchema.userId, userId),
+                eq(transactionSchema.id, transactionId)
+            ))
+        return result;
     }
 }
 

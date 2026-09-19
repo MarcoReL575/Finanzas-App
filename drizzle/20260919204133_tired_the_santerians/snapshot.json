@@ -1,7 +1,7 @@
 {
   "version": "8",
   "dialect": "postgres",
-  "id": "1a066daf-c0f3-40dc-b953-fd6b6dbeded2",
+  "id": "466ad301-c197-416a-831f-ef93cc67c00d",
   "prevIds": [
     "00000000-0000-0000-0000-000000000000"
   ],
@@ -523,7 +523,7 @@
       "table": "transaction"
     },
     {
-      "type": "numeric(10,2)",
+      "type": "integer",
       "typeSchema": null,
       "notNull": true,
       "dimensions": 0,

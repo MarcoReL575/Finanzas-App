@@ -45,13 +45,25 @@ export default function GridTransactions({ userId, limit, page }: Props) {
 
         return matchType && matchCategory && matchDate
     })
+
+   if(!filteredTransactions?.length) {
+       return (
+           <div className='w-full text-center font-semibold text-xl text-shadow-gray-500 py-5'>
+               Aún no hay gastos que mostrar
+           </div>
+       )
+   }
+
    
   return (
     <section className='py-10 space-y-5'>
+        {
+        }
         <ul className='flex flex-col gap-y-4'>
             { filteredTransactions && filteredTransactions.map((transaction)=> (
-                <CardTransaction key={transaction.id} transaction={transaction} />
-            )) }        
+                    <CardTransaction key={transaction.id} transaction={transaction} />
+                ))
+            }        
         </ul>
         <div className='grid grid-cols-2 gap-4 max-w-xl  mx-auto'>
             

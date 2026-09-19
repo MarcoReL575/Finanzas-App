@@ -1,8 +1,10 @@
 import z from "zod";
-import { insertTransactionSchema, selectTransactionSchema } from "../schemas/schemas";
+import { InsertFormTransactionSchema, insertTransactionSchema, selectTransactionSchema } from "../schemas/schemas";
 
 export type InsertTransaction = z.infer<typeof insertTransactionSchema>;
 export type SelectTransaction = z.infer<typeof selectTransactionSchema>;
+
+export type InsertFormTransaction = z.infer<typeof InsertFormTransactionSchema>
 
 export interface PaginationParams {
   page: number;

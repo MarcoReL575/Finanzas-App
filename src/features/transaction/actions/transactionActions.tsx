@@ -1,10 +1,10 @@
 'use server'
 
 import { UserSession } from "@/src/lib/authServer"
-import { InsertTransaction, PaginationParams, SelectTransaction } from "../types/types";
+import { InsertFormTransaction, PaginationParams, SelectTransaction } from "../types/types";
 import { transactionService } from "../services/serviceTransaction";
 
-export async function createTransactionAction(transaction: InsertTransaction) {
+export async function createTransactionAction(transaction: InsertFormTransaction) {
     const session = await UserSession();
     if(!session?.user.id) return { success: false, message: 'El usuario no se ha registrado' }
 
@@ -13,4 +13,11 @@ export async function createTransactionAction(transaction: InsertTransaction) {
 
 export async function getTransactionByUserAction(userId: string, { page, limit }: PaginationParams) {
     return await transactionService.getTransactionsByUser(userId, { page: page, limit });
+}
+
+export async function selectTransactionAction(transactionId: number) {
+    const session = await UserSession();
+    if(!session?.user.id) return { success: false, message: 'El usuario no se ha registrado', transaction: {} as SelectTransaction }
+
+    return await transactionService.getSingleTransactionById(session.user.id, transactionId)
 }

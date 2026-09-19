@@ -10,8 +10,11 @@ const MESES = [
 ]
 
 
-export function formatDate(fecha: Date) {
-    const date = typeof fecha === "string" ? new Date(fecha) : fecha
+export function formatDate(fecha: Date | string): string {
+  if (!fecha) return '';
+  
+  const date = typeof fecha === "string" ? new Date(fecha) : fecha;
+  if (isNaN(date.getTime())) return '';
 
   const diaSemana = DIAS[date.getDay()]
   const dia = String(date.getDate()).padStart(2, "0")

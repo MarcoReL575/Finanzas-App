@@ -1,12 +1,12 @@
 'use client'
 
 import { IconCirclePlus, IconX } from '@tabler/icons-react'
-import { Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
-import { useState } from 'react'
+import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import FormTransaction from './FormTransaction';
 import { modalStore } from '@/src/shared/stores/modalStore';
 
-export default function ButtonAddTransaction() {
+
+export default function ButtonAddTransaction({ }: Props) {
 
     const stateModal = modalStore((state)=> state.stateModal);
     const toggleModal = modalStore((state)=> state.toggleModal);

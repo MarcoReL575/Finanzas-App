@@ -1,5 +1,10 @@
-CREATE TYPE "tipo_transaccion" AS ENUM('gasto', 'ingreso');--> statement-breakpoint
-CREATE TABLE "account" (
+DO $$ BEGIN
+    CREATE TYPE "tipo_transaccion" AS ENUM('gasto', 'ingreso');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+
+CREATE TABLE IF NOT EXISTS "account" (
 	"id" text PRIMARY KEY,
 	"account_id" text NOT NULL,
 	"provider_id" text NOT NULL,
@@ -15,7 +20,7 @@ CREATE TABLE "account" (
 	"updated_at" timestamp NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "session" (
+CREATE TABLE IF NOT EXISTS "session" (
 	"id" text PRIMARY KEY,
 	"expires_at" timestamp NOT NULL,
 	"token" text NOT NULL UNIQUE,
@@ -26,7 +31,7 @@ CREATE TABLE "session" (
 	"user_id" text NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "user" (
+CREATE TABLE IF NOT EXISTS "user" (
 	"id" text PRIMARY KEY,
 	"name" text NOT NULL,
 	"email" text NOT NULL UNIQUE,
@@ -36,7 +41,7 @@ CREATE TABLE "user" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "verification" (
+CREATE TABLE IF NOT EXISTS "verification" (
 	"id" text PRIMARY KEY,
 	"identifier" text NOT NULL,
 	"value" text NOT NULL,
@@ -45,19 +50,19 @@ CREATE TABLE "verification" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "transaction" (
+CREATE TABLE IF NOT EXISTS "transaction" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "transaction_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"tipo" "tipo_transaccion" NOT NULL,
-	"monto" numeric(10,2) NOT NULL,
+	"monto" integer NOT NULL,
 	"categoria" varchar(255) NOT NULL,
 	"descripcion" varchar(255) NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"userId" text NOT NULL
 );
 --> statement-breakpoint
-CREATE INDEX "account_userId_idx" ON "account" ("user_id");--> statement-breakpoint
-CREATE INDEX "session_userId_idx" ON "session" ("user_id");--> statement-breakpoint
-CREATE INDEX "verification_identifier_idx" ON "verification" ("identifier");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "account_userId_idx" ON "account" ("user_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "session_userId_idx" ON "session" ("user_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "verification_identifier_idx" ON "verification" ("identifier");--> statement-breakpoint
 ALTER TABLE "account" ADD CONSTRAINT "account_user_id_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE CASCADE;--> statement-breakpoint
 ALTER TABLE "session" ADD CONSTRAINT "session_user_id_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE CASCADE;--> statement-breakpoint
 ALTER TABLE "transaction" ADD CONSTRAINT "transaction_userId_user_id_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE;

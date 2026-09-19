@@ -1,8 +1,24 @@
+import { modalStore } from '@/src/shared/stores/modalStore'
 import { Button } from '@/src/shared/ui/button'
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuGroup  } from '@/src/shared/ui/dropdown-menu'
 import { IconDotsCircleHorizontal, IconEdit, IconTrash } from '@tabler/icons-react'
+import { useTransactionStore } from '@/src/shared/stores/useTransactionStore';
+import { SelectTransaction } from '../types/types';
 
-export default function DropdownActions() {
+interface Props {
+    transaction: SelectTransaction;
+}
+
+export default function DropdownActions({ transaction }: Props) {
+
+    const toggleModal = modalStore((state)=> state.toggleModal);
+    const setTransaction = useTransactionStore((state)=> state.setTransaction);
+
+    const handleEditTransaction = async()=> {
+        setTransaction(transaction);
+        toggleModal(true);
+    }
+
   return (
     <DropdownMenu>
         <DropdownMenuTrigger 
@@ -12,7 +28,10 @@ export default function DropdownActions() {
         </DropdownMenuTrigger>
         <DropdownMenuContent className='bg-white p-2'>
             <DropdownMenuGroup>
-                <DropdownMenuItem className='flex cursor-pointer items-center gap-x-2 hover:font-semibold hover:translate-x-4 hover:text-blue-500 hover:scale-110 transition-all duration-300'>
+                <DropdownMenuItem 
+                    className='flex cursor-pointer items-center gap-x-2 hover:font-semibold hover:translate-x-4 hover:text-blue-500 hover:scale-110 transition-all duration-300'
+                    onClick={handleEditTransaction}
+                >
                     <IconEdit size={20} />
                     Editar
                 </DropdownMenuItem>
