@@ -56,34 +56,31 @@ export default function GridTransactions({ userId, limit, page }: Props) {
 
    
   return (
-    <section className='py-10 space-y-5'>
-        {
-        }
+    <section className='py-10 space-y-5 w-full mx-auto'>
+        <div className='flex items-center justify-start text-xs font-semibold gap-x-2'>
+            <Select value={String(limit)} onValueChange={handleLimitChange} >
+                <SelectTrigger className="w-fit">
+                    <SelectValue placeholder="3 " />
+                </SelectTrigger>
+                <SelectContent className='bg-white'>
+                    {
+                        PAGE_SIZE_OPTIONS.map((size)=>(
+                        <SelectItem key={size} value={String(size)}>
+                            {size}
+                        </SelectItem>
+                        ))
+                    }
+                </SelectContent>
+            </Select>
+            <span>Elementos por página</span>
+        </div>
         <ul className='flex flex-col gap-y-4'>
             { filteredTransactions && filteredTransactions.map((transaction)=> (
                     <CardTransaction key={transaction.id} transaction={transaction} />
                 ))
             }        
         </ul>
-        <div className='grid grid-cols-2 gap-4 max-w-xl  mx-auto'>
-            
-            <div className='flex items-center justify-center text-xs font-semibold gap-x-2'>
-                <Select value={String(limit)} onValueChange={handleLimitChange} >
-                    <SelectTrigger className="w-fit">
-                        <SelectValue placeholder="3 " />
-                    </SelectTrigger>
-                    <SelectContent className='bg-white'>
-                        {
-                            PAGE_SIZE_OPTIONS.map((size)=>(
-                            <SelectItem key={size} value={String(size)}>
-                                {size}
-                            </SelectItem>
-                            ))
-                        }
-                    </SelectContent>
-                </Select>
-                <span>Elementos por página</span>
-            </div>
+        <div className='w-fullmx-auto'>
             <PaginationComponent  
                 data={data}
                 limit={limit}

@@ -75,7 +75,6 @@ export default function PaginationComponent({ limit, page, data, isPlaceholderDa
         return pages
     }
 
-    if (totalPages <= 1) return null;
     const isPrevDisabled = page <= 1 || isPlaceholderData
     const isNextDisabled = !data?.hasMore || isPlaceholderData
     const pageNumbers = getPageNumbers()
