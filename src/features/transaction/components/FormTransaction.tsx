@@ -1,7 +1,7 @@
 'use client'
 
 import { redirect } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -26,13 +26,28 @@ export default function FormTransaction() {
         resolver: zodResolver(InsertFormTransactionSchema),
         mode: 'onBlur',
         defaultValues: {
-            tipo: transaction.tipo?? 'gasto',
-            monto: transaction.monto? transaction.monto / 100 : 0,
-            createdAt: formatDateToInput(transaction.createdAt),
-            categoria: transaction.categoria ?? '',
-            descripcion: transaction.descripcion ?? '',
+            tipo: 'gasto',
+            monto: NaN,
+            createdAt: '',
+            categoria:  '',
+            descripcion: '',
+            id: ''
         }
     });
+
+    useEffect(()=>{
+        if(transaction) {
+            reset({
+                tipo: transaction.tipo ?? 'gasto',
+                monto: transaction.monto ? transaction.monto / 100 : undefined,
+                createdAt: formatDateToInput(transaction.createdAt),
+                categoria:  transaction.categoria ?? '',
+                descripcion: transaction.descripcion ?? '',
+                id: ''
+            })
+            setSelectedTab(transaction.tipo === 'ingreso' ? 1 : 0);
+        }
+    }, [transaction, reset]);
 
     const currentType = watch('tipo');
 
@@ -44,6 +59,7 @@ export default function FormTransaction() {
     };
 
     const handleCreateTransaction = async(transaction: InsertFormTransaction)=> {
+
         const montoEnCentavos = Math.round(transaction.monto * 100);
         const objectTransaction = {
             ...transaction,

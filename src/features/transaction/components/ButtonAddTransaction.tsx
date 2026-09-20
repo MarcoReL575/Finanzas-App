@@ -4,18 +4,26 @@ import { IconCirclePlus, IconX } from '@tabler/icons-react'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import FormTransaction from './FormTransaction';
 import { modalStore } from '@/src/shared/stores/modalStore';
+import { useTransactionStore } from '@/src/shared/stores/useTransactionStore';
+import { SelectTransaction } from '../types/types';
 
 
-export default function ButtonAddTransaction({ }: Props) {
+export default function ButtonAddTransaction() {
 
     const stateModal = modalStore((state)=> state.stateModal);
     const toggleModal = modalStore((state)=> state.toggleModal);
+    const setTransaction = useTransactionStore((state)=> state.setTransaction)
+    
+    const handleCreateNewTransaction = ()=> {
+        setTransaction({} as SelectTransaction) 
+        toggleModal(true)
+    }
 
   return (
     <>
         <button 
             className='bg-green-500 w-fit flex items-center gap-x-2 text-white px-4 py-2 rounded-lg hover:bg-green-400 cursor-pointer'
-            onClick={() =>toggleModal(true)}
+            onClick={handleCreateNewTransaction}
         >
             <IconCirclePlus />
             Agregar Transacción
