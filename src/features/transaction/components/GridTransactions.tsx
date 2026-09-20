@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { useCallback, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Route } from 'next';
+import SearchFilters from './SearchFilters';
 
 interface Props {
     userId: string;
@@ -22,7 +23,7 @@ export default function GridTransactions({ userId, limit, page }: Props) {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
-    const { valueType, valueCategory, dateRange } = useFilterStore();
+    const { valueType, valueCategory, dateRange, valueFilter } = useFilterStore();
 
     const { data, isFetching, isPlaceholderData } = useQuery({
         queryKey: ['transactions', { userId, page, limit }],
@@ -42,8 +43,9 @@ export default function GridTransactions({ userId, limit, page }: Props) {
         const matchType = valueType === 'all' || transaction.tipo === valueType
         const matchCategory = valueCategory === 'all' || transaction.categoria === valueCategory
         const matchDate = !dateRange || (transaction.createdAt >= dateRange.from && transaction.createdAt <= dateRange.to)
+        const matchFilter = valueFilter === null || transaction.descripcion.toLowerCase().includes(valueFilter)
 
-        return matchType && matchCategory && matchDate
+        return matchType && matchCategory && matchDate && matchFilter
     })
 
    if(!filteredTransactions?.length) {
@@ -56,23 +58,28 @@ export default function GridTransactions({ userId, limit, page }: Props) {
 
    
   return (
-    <section className='py-10 space-y-5 w-full mx-auto'>
-        <div className='flex items-center justify-start text-xs font-semibold gap-x-2'>
-            <Select value={String(limit)} onValueChange={handleLimitChange} >
-                <SelectTrigger className="w-fit">
-                    <SelectValue placeholder="3 " />
-                </SelectTrigger>
-                <SelectContent className='bg-white'>
-                    {
-                        PAGE_SIZE_OPTIONS.map((size)=>(
-                        <SelectItem key={size} value={String(size)}>
-                            {size}
-                        </SelectItem>
-                        ))
-                    }
-                </SelectContent>
-            </Select>
-            <span>Elementos por página</span>
+    <section className='space-y-5 w-full mx-auto'>
+        <div className='flex w-full gap-x-4'>
+            <div className='w-2/3'>
+                <SearchFilters />
+            </div>
+            <div className='flex w-1/3 items-center justify-start text-xs font-semibold gap-x-2'>
+                <Select value={String(limit)} onValueChange={handleLimitChange} >
+                    <SelectTrigger className="w-fit">
+                        <SelectValue placeholder="3 " />
+                    </SelectTrigger>
+                    <SelectContent className='bg-white'>
+                        {
+                            PAGE_SIZE_OPTIONS.map((size)=>(
+                            <SelectItem key={size} value={String(size)}>
+                                {size}
+                            </SelectItem>
+                            ))
+                        }
+                    </SelectContent>
+                </Select>
+                <span>Elementos por página</span>
+            </div>
         </div>
         <ul className='flex flex-col gap-y-4'>
             { filteredTransactions && filteredTransactions.map((transaction)=> (

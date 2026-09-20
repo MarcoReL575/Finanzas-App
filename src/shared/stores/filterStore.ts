@@ -5,7 +5,9 @@ interface FilterStore {
     valueType: string;
     valueCategory: string;
     dateRange: DateRange | undefined;
-    setDateRange: (date: DateRange)=> void
+    valueFilter: string | null;
+    setValueFilter: (valueFilter: string)=> void;
+    setDateRange: (date: DateRange)=> void;
     setValueType: (filter: string) => void;
     setvalueCategory: (valueCategory: string) => void;
 }
@@ -18,5 +20,8 @@ export const useFilterStore = create<FilterStore>()((set) => ({
     setvalueCategory: (valueCategory) => set(()=> ({ valueCategory })),
     
     dateRange: undefined,
-    setDateRange: (dateRange)=> set(()=> ({ dateRange }))
+    setDateRange: (dateRange)=> set(()=> ({ dateRange })),
+
+    valueFilter: null,
+    setValueFilter: (valueFilter)=> set(()=> ({ valueFilter }))
 }))

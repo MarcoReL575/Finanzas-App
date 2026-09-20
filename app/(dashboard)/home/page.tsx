@@ -8,6 +8,7 @@ import { FilterMyDatePicker } from '../../../src/features/transaction/components
 import FilerSelectTransaction from '@/src/features/transaction/components/FilerSelectTransaction'
 import FilterCategories from '@/src/features/transaction/components/FilterCategories'
 import FilterReset from '@/src/features/transaction/components/FilterReset'
+import CardStats from '@/src/shared/components/CardStats'
 
 interface Props {
   searchParams: Promise<{ page?: string; limit?: string }>
@@ -35,22 +36,32 @@ export default async function HomePage({ searchParams }: Props) {
   })
 
   return (
-    <section className='flex flex-col w-full space-y-4 max-w-6xl mx-auto'>
+    <section className='flex flex-col w-full space-y-10 max-w-6xl mx-auto'>
       <ButtonAddTransaction />
-      <h2 className='text-xl font-semibold'>Lista de Transacciones</h2>
-      <div className='flex items-center justify-around max-w-2xl mx-auto gap-x-4'>
-        <FilterMyDatePicker />
-        <FilerSelectTransaction />
-        <FilterCategories />
-        <FilterReset />
-      </div>
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <GridTransactions 
-          userId={session.user.id} 
-          page={page} 
-          limit={limit}
-        />
-      </HydrationBoundary>
+
+      <section className='grid grid-cols-3 gap-x-5'>
+        <CardStats />
+        <CardStats />
+        <CardStats />
+      </section>
+      
+      <section className=' space-y-5'>
+        <h2 className='text-xl font-semibold'>Lista de Transacciones</h2>
+        <div className='flex items-center justify-between w-full mx-auto gap-x-4'>
+          <FilterMyDatePicker />
+          <FilerSelectTransaction />
+          <FilterCategories />
+          <FilterReset />
+        </div>
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <GridTransactions 
+            userId={session.user.id} 
+            page={page} 
+            limit={limit}
+          />
+        </HydrationBoundary>
+      </section>
+
     </section>
   )
 }
