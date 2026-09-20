@@ -21,3 +21,10 @@ export async function selectTransactionAction(transactionId: number) {
 
     return await transactionService.getSingleTransactionById(session.user.id, transactionId)
 }
+
+export async function deleteTransactionAction(transactionId: number) {
+    const session = await UserSession();
+    if(!session?.user.id) return { success: false, message: 'El usuario no se ha registrado'}
+
+    return await transactionService.deleteTansaction(session.user.id, transactionId);
+}

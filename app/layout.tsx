@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Notification from "@/src/shared/components/Notification";
 import { QueryProvider } from "@/src/shared/providers/QueryProvider";
+import { ModalProvider } from "@/src/shared/components/ModalGlobal";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Notification />
         <QueryProvider>
           {children}
+          <ModalProvider />
         </QueryProvider>
       </body>
     </html>

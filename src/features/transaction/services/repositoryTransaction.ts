@@ -7,6 +7,7 @@ export interface IransactionRepository {
     insertTransaction(transaction: InsertTransaction): Promise<void>;
     selectTransactionsUser(userId: string, { page, limit }: PaginationParams): Promise<PaginatedResult<SelectTransaction>>;
     selectSingleTransaction(userId: string, transactionId: number): Promise<SelectTransaction>;
+    deleteSingleTransaction(userId:string, transactionId: number): Promise<void>;
 }
 
 class TransactionRepository implements IransactionRepository {
@@ -52,6 +53,15 @@ class TransactionRepository implements IransactionRepository {
                 eq(transactionSchema.id, transactionId)
             ))
         return result;
+    }
+
+    async deleteSingleTransaction(userId: string, transactionId: number): Promise<void> {
+        await db
+            .delete(transactionSchema)
+            .where( and(
+                eq(transactionSchema.userId, userId),
+                eq(transactionSchema.id, transactionId),
+            ))
     }
 }
 

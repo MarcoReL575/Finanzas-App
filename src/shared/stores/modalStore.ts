@@ -1,11 +1,19 @@
 import { create } from 'zustand'
 
+export type ModalType = 'formTransaction' | 'deleteTransaction' | null;
+
 interface ModalStore {
-    stateModal: boolean
-    toggleModal: (state: boolean) => void
+    type: ModalType;
+    data: any;
+    isOpen: boolean;
+    openModal: (type: ModalType, data?: any) => void;
+    closeModal: () => void;
 }
 
-export const modalStore = create<ModalStore>()((set) => ({
-    stateModal: false,
-    toggleModal: (state: boolean) => set(() => ({ stateModal: state })),
+export const useModalStore = create<ModalStore>()((set) => ({
+    type: null,
+    data: {},
+    isOpen: false,
+    openModal: (type, data = {}) => set({ isOpen: true, type, data }),
+    closeModal: () => set({ isOpen: false, type: null }),
 }))

@@ -12,12 +12,12 @@ import { listaGastos } from '@/src/category'
 import { InsertFormTransaction } from '../types/types'
 import { createTransactionAction } from '../actions/transactionActions'
 import { FormError, FormComponent, FormInput, FormLabel, FormSubmit } from '@/src/shared/components/form'
-import { modalStore } from '@/src/shared/stores/modalStore'
 import { useTransactionStore } from '@/src/shared/stores/useTransactionStore'
 import { formatDateToInput } from '@/src/shared/helper/formatDateToInput'
+import { useModalStore } from '@/src/shared/stores/modalStore'
 
 export default function FormTransaction() {
-    const toggleModal = modalStore((state)=> state.toggleModal);
+    const openModal = useModalStore((state)=> state.openModal);
     const transaction = useTransactionStore((state)=> state.transaction);
     const [selectedTab, setSelectedTab] = useState(transaction.tipo === 'gasto' ? 0 : 1);
     
@@ -70,7 +70,7 @@ export default function FormTransaction() {
             toast.error(message);
         }
         if(success) {
-            toggleModal(false);
+            openModal('formTransaction');
             toast.success(message);
             redirect('/home');
         }

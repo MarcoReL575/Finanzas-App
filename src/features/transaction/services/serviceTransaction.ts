@@ -32,9 +32,18 @@ class TransactionService {
     async getSingleTransactionById(userId: string, transactionId: number) {
         try {
             const transaction = await this.transactionRepository.selectSingleTransaction(userId, transactionId);
-            return { success: false, message: 'El usuario no se ha registrado', transaction }
+            return { success: true, message: 'El usuario no se ha registrado', transaction }
         } catch (error) {
             return { success: false, message: 'Error al obtener el gasto', transaction: {} as SelectTransaction }
+        }
+    }
+
+    async deleteTansaction(userId: string, transactionId: number) {
+        try {
+            await this.transactionRepository.deleteSingleTransaction(userId, transactionId);
+            return { success: true, message: 'La transacción se ha eliminado' }
+        } catch (error) {
+            return { success: false, message: 'Error al eliminar la transacción' }
         }
     }
 }
