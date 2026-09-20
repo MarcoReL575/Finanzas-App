@@ -4,23 +4,34 @@ import { Button } from '@/src/shared/ui/button';
 import { useTransactionStore } from '@/src/shared/stores/useTransactionStore';
 import { deleteTransactionAction } from '../actions/transactionActions';
 import toast from 'react-hot-toast';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export function ModalDeleteTransaction() {
    
     const transaction = useTransactionStore((state)=> state.transaction);
     const isOpen = useModalStore((state) => state.isOpen);
     const closeModal = useModalStore((state) => state.closeModal);
+    const queryClient = useQueryClient();
 
-    console.log(transaction);
-    const handleConfirmDeleteTransaction = async()=> {
-        const { success, message } = await deleteTransactionAction(transaction.id);
-        if(!success) {
-            toast.error(message);
+    const { mutate: deleteTransaction, isPending } = useMutation({
+        mutationFn: (transactionId: number) => deleteTransactionAction(transactionId),
+        onSuccess: (data) => {
+            if(data.success) {
+                queryClient.invalidateQueries({  queryKey: ['transactions'] })
+                toast.success(data.message);
+                closeModal();
+            } else {
+                toast.error(data.message);
+            }
+        },
+        onError: ()=> {
+            toast.error('Ocurrió un error al eliminar la transacción');
         }
+    });
 
-        if(success) {
-            toast.success(message);
-            closeModal();
+    const handleConfirmDelete = ()=> {
+        if(transaction.id) {
+            deleteTransaction(transaction.id)
         }
     }
 
@@ -37,9 +48,10 @@ export function ModalDeleteTransaction() {
                             <Button 
                                 variant='destructive' 
                                 className='bg-red-500 hover:bg-red-400 text-white transition-all duration-300'
-                                onClick={handleConfirmDeleteTransaction}
+                                onClick={handleConfirmDelete}
+                                disabled={isPending}
                             >
-                                Eliminar
+                                { isPending ? 'Eliminando...' : 'Eliminar' }
                             </Button>
                             <Button variant='outline' onClick={closeModal}>Cancelar</Button>
                         </div>

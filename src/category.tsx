@@ -10,46 +10,16 @@ type ListaGatos = {
 
 export const listaGastos: ListaGatos = [
     {
-        "id": 0,
-        "label": "Todos",
-        "value": "all",
-        "icon": <IconCoin size={60} />
+        "id": 15,
+        "label": "Ahorro e Inversion",
+        "value": "ahorro",
+        "icon": <IconPigMoney size={40} />
     },
     {
-        "id": 1,
-        "label": "Hipoteca o alquiler",
-        "value": "hipoteca",
-        "icon": <IconHomeDollar size={60} />
-    },
-    {
-        "id": 2,
-        "label": "Servicios del hogar",
-        "value": "hogar",
-        "icon": <IconHome size={40} />
-    },
-    {
-        "id": 3,
-        "label": "Restaurantes",
-        "value": "restaurantes",
-        "icon": <IconBurger size={40} />
-    },
-    {
-        "id": 4,
-        "label": "Transporte",
-        "value": "transporte",
-        "icon": <IconBus size={40} />
-    },
-    {
-        "id": 5,
-        "label": "Salud y Bienestar",
-        "value": "salud",
-        "icon": <IconFirstAidKit size={40} />
-    },
-    {
-        "id": 6,
-        "label": "Seguros",
-        "value": "seguros",
-        "icon": <IconReportMedical size={40} />
+        "id": 10,
+        "label": "Cuidado Personal",
+        "value": "cuidado",
+        "icon": <IconClipboardHeart size={40} />
     },
     {
         "id": 7,
@@ -64,16 +34,16 @@ export const listaGastos: ListaGatos = [
         "icon": <IconDeviceGamepad size={40} />
     },
     {
-        "id": 9,
-        "label": "Ropa y Calzado",
-        "value": "ropa",
-        "icon": <IconShirt size={40} />
+        "id": 14,
+        "label": "Finanzas y Deudas",
+        "value": "finanzas",
+        "icon": <IconReportMoney size={40} />
     },
     {
-        "id": 10,
-        "label": "Cuidado Personal",
-        "value": "cuidado",
-        "icon": <IconClipboardHeart size={40} />
+        "id": 1,
+        "label": "Hipoteca o alquiler",
+        "value": "hipoteca",
+        "icon": <IconHomeDollar size={60} />
     },
     {
         "id": 11,
@@ -94,16 +64,52 @@ export const listaGastos: ListaGatos = [
         "icon": <IconGif size={40} />
     },
     {
-        "id": 14,
-        "label": "Finanzas y Deudas",
-        "value": "finanzas",
-        "icon": <IconReportMoney size={40} />
+        "id": 3,
+        "label": "Restaurantes",
+        "value": "restaurantes",
+        "icon": <IconBurger size={40} />
     },
     {
-        "id": 15,
-        "label": "Ahorro e Inversion",
-        "value": "ahorro",
-        "icon": <IconPigMoney size={40} />
+        "id": 9,
+        "label": "Ropa y Calzado",
+        "value": "ropa",
+        "icon": <IconShirt size={40} />
+    },
+    {
+        "id": 5,
+        "label": "Salud y Bienestar",
+        "value": "salud",
+        "icon": <IconFirstAidKit size={40} />
+    },
+    {
+        "id": 6,
+        "label": "Seguros",
+        "value": "seguros",
+        "icon": <IconReportMedical size={40} />
+    },
+    {
+        "id": 2,
+        "label": "Servicios del hogar",
+        "value": "hogar",
+        "icon": <IconHome size={40} />
+    },
+    {
+        "id": 17,
+        "label": "Sueldo o ingreso",
+        "value": "sueldo",
+        "icon": <IconCashBanknote size={40} />
+    },
+    {
+        "id": 0,
+        "label": "Todos",
+        "value": "all",
+        "icon": <IconCoin size={60} />
+    },
+    {
+        "id": 4,
+        "label": "Transporte",
+        "value": "transporte",
+        "icon": <IconBus size={40} />
     },
     {
         "id": 16,
@@ -111,10 +117,4 @@ export const listaGastos: ListaGatos = [
         "value": "vacaciones",
         "icon": <IconPlane size={40} />
     },
-    {
-        "id": 17,
-        "label": "Sueldo o ingreso",
-        "value": "sueldo",
-        "icon": <IconCashBanknote size={40} />
-    }
 ]

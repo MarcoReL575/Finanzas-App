@@ -17,7 +17,7 @@ import { formatDateToInput } from '@/src/shared/helper/formatDateToInput'
 import { useModalStore } from '@/src/shared/stores/modalStore'
 
 export default function FormTransaction() {
-    const openModal = useModalStore((state)=> state.openModal);
+    const closeModal = useModalStore((state)=> state.closeModal);
     const transaction = useTransactionStore((state)=> state.transaction);
     const [selectedTab, setSelectedTab] = useState(transaction.tipo === 'gasto' ? 0 : 1);
     
@@ -70,7 +70,7 @@ export default function FormTransaction() {
             toast.error(message);
         }
         if(success) {
-            openModal('formTransaction');
+            closeModal();
             toast.success(message);
             redirect('/home');
         }

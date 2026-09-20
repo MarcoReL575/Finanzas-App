@@ -4,7 +4,6 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 import { IconDotsCircleHorizontal, IconEdit, IconTrash } from '@tabler/icons-react'
 import { useTransactionStore } from '@/src/shared/stores/useTransactionStore';
 import { SelectTransaction } from '../types/types';
-import { ModalDeleteTransaction } from './ModalDeleteTransaction';
 
 interface Props {
     transaction: SelectTransaction;
@@ -14,7 +13,7 @@ export default function DropdownActions({ transaction }: Props) {
 
     const setTransaction = useTransactionStore((state)=> state.setTransaction);
     const openModal = useModalStore((state) => state.openModal);
-
+    
     const handleEditTransaction = async()=> {
         setTransaction(transaction);
         openModal('formTransaction');
