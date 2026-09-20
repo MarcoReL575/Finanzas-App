@@ -14,7 +14,7 @@ export default function DropdownActions({ transaction }: Props) {
     const setTransaction = useTransactionStore((state)=> state.setTransaction);
     const openModal = useModalStore((state) => state.openModal);
     
-    const handleEditTransaction = async()=> {
+    const handleEditTransaction = ()=> {
         setTransaction(transaction);
         openModal('formTransaction');
     }

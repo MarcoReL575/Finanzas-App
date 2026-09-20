@@ -9,17 +9,19 @@ import { TabGroup, TabList, Tab } from '@headlessui/react'
 import clsx from 'clsx'
 import { InsertFormTransactionInput, InsertFormTransactionSchema } from '../schemas/schemas'
 import { listaGastos } from '@/src/category'
-import { InsertFormTransaction } from '../types/types'
-import { createTransactionAction } from '../actions/transactionActions'
+import { InsertFormTransaction, SelectTransaction } from '../types/types'
+import { createTransactionAction, editTransactionAction } from '../actions/transactionActions'
 import { FormError, FormComponent, FormInput, FormLabel, FormSubmit } from '@/src/shared/components/form'
 import { useTransactionStore } from '@/src/shared/stores/useTransactionStore'
 import { formatDateToInput } from '@/src/shared/helper/formatDateToInput'
 import { useModalStore } from '@/src/shared/stores/modalStore'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 export default function FormTransaction() {
     const closeModal = useModalStore((state)=> state.closeModal);
     const transaction = useTransactionStore((state)=> state.transaction);
     const [selectedTab, setSelectedTab] = useState(transaction.tipo === 'gasto' ? 0 : 1);
+    const queryClient = useQueryClient();
     
     const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = 
     useForm<InsertFormTransactionInput, any, InsertFormTransaction>({
@@ -27,11 +29,11 @@ export default function FormTransaction() {
         mode: 'onBlur',
         defaultValues: {
             tipo: 'gasto',
-            monto: NaN,
+            monto: undefined,
             createdAt: '',
             categoria:  '',
             descripcion: '',
-            id: ''
+            id: undefined
         }
     });
 
@@ -43,7 +45,6 @@ export default function FormTransaction() {
                 createdAt: formatDateToInput(transaction.createdAt),
                 categoria:  transaction.categoria ?? '',
                 descripcion: transaction.descripcion ?? '',
-                id: ''
             })
             setSelectedTab(transaction.tipo === 'ingreso' ? 1 : 0);
         }
@@ -58,23 +59,64 @@ export default function FormTransaction() {
         setValue('categoria', '')
     };
 
-    const handleCreateTransaction = async(transaction: InsertFormTransaction)=> {
+    const { mutate: editTransaction, isPending } = useMutation({
+        mutationFn: (transaction: InsertFormTransaction)=> editTransactionAction(transaction),
+        onSuccess: (data)=> {
+            if(data.success) {
+                queryClient.invalidateQueries({  queryKey: ['transactions'] });
+                closeModal();
+                toast.success(data.message);
+            } else {
+                toast.error(data.message);
+            }
+        },
+        onError: ()=> {
+            toast.error('Hubo un error al editar la transacción');
+        },
+    })
 
-        const montoEnCentavos = Math.round(transaction.monto * 100);
-        const objectTransaction = {
-            ...transaction,
-            monto: montoEnCentavos,
+
+    const handleCreateTransaction = async(data: InsertFormTransaction)=> {
+        const montoEnCentavos = Math.round(data.monto * 100);
+        if(transaction.id) {
+            const dataEdit = {
+                ...data,
+                id: transaction.id,
+                monto: montoEnCentavos
+            }
+           editTransaction(dataEdit);
         }
-        const { success, message } = await createTransactionAction(objectTransaction);
-        if(!success) {
-            toast.error(message);
-        }
-        if(success) {
-            closeModal();
-            toast.success(message);
-            redirect('/home');
+
+        if(!transaction.id) {
+            const objectTransaction = {
+                ...data,
+                monto: montoEnCentavos,
+            }
+            const { success, message } = await createTransactionAction(objectTransaction);
+            if(!success) {
+                toast.error(message);
+            }
+            if(success) {
+                closeModal();
+                toast.success(message);
+                redirect('/home');
+            }
         }
     }
+
+    const getSubmitText = () => {
+        const isEditing = Boolean(transaction?.id);
+        if (isPending) {
+            if (isEditing) return 'Guardando cambios...';
+            return currentType === 'gasto' ? 'Agregando Gasto...' : 'Agregando Ingreso...';
+        }
+
+        if (isEditing) {
+            return currentType === 'gasto' ? 'Editar Gasto' : 'Editar Ingreso';
+        }
+
+        return currentType === 'gasto' ? 'Agregar Gasto' : 'Agregar Ingreso';
+    };
 
     return (
         <TabGroup selectedIndex={selectedTab} onChange={handleTabChange} className='max-w-xl'>
@@ -112,14 +154,14 @@ export default function FormTransaction() {
                 <FormInput {...register('createdAt')} type='date' />
                 {errors.createdAt && <FormError>{errors.createdAt.message}</FormError>}
 
-                <FormSubmit className={clsx('', 
-                    currentType === 'gasto' && 'bg-red-500 hover:bg-red-400',
-                    currentType === 'ingreso' && 'bg-green-500 hover:bg-green-400'
-                )}>
-                    { currentType === 'gasto' 
-                        ? 'Agregar Gato'
-                        : 'Añadir Ingreso'
-                    }
+                <FormSubmit 
+                    disabled={isPending} 
+                    className={clsx('', 
+                        currentType === 'gasto' && 'bg-red-500 hover:bg-red-400',
+                        currentType === 'ingreso' && 'bg-green-500 hover:bg-green-400'
+                    )}
+                >
+                    {getSubmitText()}
                 </FormSubmit>
             </FormComponent>            
         </TabGroup>

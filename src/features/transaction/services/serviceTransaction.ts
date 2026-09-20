@@ -16,6 +16,7 @@ class TransactionService {
             await this.transactionRepository.insertTransaction(transactionData);
             return { success: true, message: 'Transacción agregada' }
         } catch (error) {
+            console.log({error})
             return { success: false, message: 'Error al crear la transacción' }
         }
     }
@@ -44,6 +45,21 @@ class TransactionService {
             return { success: true, message: 'La transacción se ha eliminado' }
         } catch (error) {
             return { success: false, message: 'Error al eliminar la transacción' }
+        }
+    }
+
+    async updateTransaction(userId: string, transaction: InsertFormTransaction) {
+        const transactionData = {
+            ...transaction,
+            createdAt: new Date(transaction.createdAt),
+            userId: userId
+        }
+        try {
+            await this.transactionRepository.updateSingleTransaction(userId, transactionData, transaction.id!);
+            return { success: true, message: 'La transacción se ha actualizado' }
+        } catch (error) {
+            console.log(error)
+            return { success: false, message: 'Hubo un error al actualizar' }
         }
     }
 }

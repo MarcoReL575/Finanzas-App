@@ -11,7 +11,7 @@ export const InsertFormTransactionSchema = z.object({
     categoria: z.string().min(1, 'Selecciona una categoría'),
     descripcion: z.string().min(1, 'La descripción es requerida'),
     createdAt: z.string().min(1, 'La fecha es requerida'),
-    id: z.string().optional()
+    id: z.number().optional()
 });
 
 export type InsertFormTransaction = z.output<typeof InsertFormTransactionSchema>;

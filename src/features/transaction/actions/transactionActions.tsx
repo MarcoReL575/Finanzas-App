@@ -28,3 +28,10 @@ export async function deleteTransactionAction(transactionId: number) {
 
     return await transactionService.deleteTansaction(session.user.id, transactionId);
 }
+
+export async function editTransactionAction(transaction: InsertFormTransaction) {
+    const session = await UserSession();
+    if(!session?.user.id) return { success: false, message: 'El usuario no se ha registrado'}
+
+    return await transactionService.updateTransaction(session.user.id, transaction);
+}
