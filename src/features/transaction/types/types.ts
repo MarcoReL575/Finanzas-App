@@ -18,3 +18,9 @@ export interface PaginatedResult<T> {
   page: number;
   limit: number;
 };
+
+export interface UserBalance {
+  totalIngresos: number;
+  totalGastos: number;
+  balanceTotal: number;
+}

@@ -1,7 +1,7 @@
 import { db } from "@/src/db"
 import { transactionSchema } from "@/src/db/schema"
-import { InsertTransaction, PaginatedResult, PaginationParams, SelectTransaction } from "../types/types"
-import { and, asc, count, desc, eq } from "drizzle-orm";
+import { InsertTransaction, PaginatedResult, PaginationParams, SelectTransaction, UserBalance } from "../types/types"
+import { and, asc, count, desc, eq, sql } from "drizzle-orm";
 
 export interface IransactionRepository {
     insertTransaction(transaction: InsertTransaction): Promise<void>;
@@ -9,6 +9,7 @@ export interface IransactionRepository {
     selectSingleTransaction(userId: string, transactionId: number): Promise<SelectTransaction>;
     deleteSingleTransaction(userId:string, transactionId: number): Promise<void>;
     updateSingleTransaction(userId: string, transaction: InsertTransaction, transId: number): Promise<void>;
+    getUserBalance(userId: string): Promise<UserBalance>
 }
 
 class TransactionRepository implements IransactionRepository {
@@ -80,6 +81,30 @@ class TransactionRepository implements IransactionRepository {
                 eq(transactionSchema.id, transId),
                 eq(transactionSchema.userId, userId)
             ))
+    }
+
+    async getUserBalance(userId: string): Promise<UserBalance> {
+        const [result] = await db
+            .select({
+                // Suma montos cuando tipo es 'ingreso', si es null retorna 0
+                totalIngresos: sql<number>`
+                    COALESCE(SUM(CASE WHEN ${transactionSchema.tipo} = 'ingreso' THEN ${transactionSchema.monto} ELSE 0 END), 0)::int
+                `,
+                // Suma montos cuando tipo es 'gasto', si es null retorna 0
+                totalGastos: sql<number>`COALESCE(SUM(CASE WHEN ${transactionSchema.tipo} = 'gasto' THEN ${transactionSchema.monto} ELSE 0 END), 0)::int`,
+            })
+            .from(transactionSchema)
+            .where(eq(transactionSchema.userId, userId));
+        
+        const totalIngresos = Number(result?.totalIngresos ?? 0);
+        const totalGastos = Number(result?.totalGastos ?? 0);
+        const balanceTotal = totalIngresos - totalGastos;
+
+        return {
+            totalIngresos,
+            totalGastos,
+            balanceTotal,
+        };
     }
 }
 

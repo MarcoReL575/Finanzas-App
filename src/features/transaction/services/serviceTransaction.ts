@@ -1,4 +1,5 @@
-import { InsertFormTransaction, InsertTransaction, PaginatedResult, PaginationParams, SelectTransaction } from "../types/types";
+import { formatCurrency } from "@/src/shared/helper/formatCurrency";
+import { InsertFormTransaction, InsertTransaction, PaginatedResult, PaginationParams, SelectTransaction, UserBalance } from "../types/types";
 import { IransactionRepository, transactionRepository } from "./repositoryTransaction";
 
 class TransactionService {
@@ -60,6 +61,23 @@ class TransactionService {
         } catch (error) {
             console.log(error)
             return { success: false, message: 'Hubo un error al actualizar' }
+        }
+    }
+
+    async getBalanceSummary(userId: string) {
+        try {
+            const balance = await this.transactionRepository.getUserBalance(userId);
+            return {
+                success: true,
+                message: '',
+                data: {
+                    totalIngresos: balance.totalIngresos,
+                    totalGastos: balance.totalGastos,
+                    balanceTotal: balance.balanceTotal,
+                }
+            };
+        } catch (error) {
+            return { success: false, message: 'No se pudo obtener el balance', data: {} as UserBalance };
         }
     }
 }

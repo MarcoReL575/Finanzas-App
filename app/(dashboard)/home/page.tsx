@@ -9,6 +9,7 @@ import FilerSelectTransaction from '@/src/features/transaction/components/FilerS
 import FilterCategories from '@/src/features/transaction/components/FilterCategories'
 import FilterReset from '@/src/features/transaction/components/FilterReset'
 import CardStats from '@/src/shared/components/CardStats'
+import { IconCoin, IconTrendingDown, IconTrendingUp } from '@tabler/icons-react'
 
 interface Props {
   searchParams: Promise<{ page?: string; limit?: string }>
@@ -35,14 +36,16 @@ export default async function HomePage({ searchParams }: Props) {
     queryFn: () => transactionService.getTransactionsByUser(session.user.id, {page, limit}),
   })
 
+  const { success, message, data } = await transactionService.getBalanceSummary(session.user.id); 
+
   return (
     <section className='flex flex-col w-full space-y-10 max-w-6xl mx-auto'>
       <ButtonAddTransaction />
 
       <section className='grid grid-cols-3 gap-x-5'>
-        <CardStats />
-        <CardStats />
-        <CardStats />
+        <CardStats titleCard='Total Gastos' total={data.totalGastos} type='gasto' icon={<IconTrendingDown />} />
+        <CardStats titleCard='Total Ingresos' total={data.totalIngresos} type='ingreso' icon={<IconTrendingUp />} />
+        <CardStats titleCard='Balance Total' total={data.totalGastos} type='balance' icon={<IconCoin />} />
       </section>
       
       <section className=' space-y-5'>
