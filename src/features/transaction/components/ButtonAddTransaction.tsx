@@ -4,6 +4,7 @@ import { IconCirclePlus, IconX } from '@tabler/icons-react'
 import { useTransactionStore } from '@/src/shared/stores/useTransactionStore';
 import { SelectTransaction } from '../types/types';
 import { useModalStore } from '@/src/shared/stores/modalStore';
+import { Button } from '@/src/shared/ui/button';
 
 
 export default function ButtonAddTransaction() {
@@ -18,13 +19,13 @@ export default function ButtonAddTransaction() {
 
   return (
     <>
-        <button 
-            className='bg-green-500 w-fit flex items-center gap-x-2 text-white px-4 py-2 rounded-lg hover:bg-green-400 cursor-pointer'
+        <Button 
+            className='bg-green-500 w-fit gap-x-2 text-white hover:bg-green-400'
             onClick={handleCreateNewTransaction}
         >
             <IconCirclePlus />
             Agregar Transacción
-        </button>
+        </Button>
         
     </>
 

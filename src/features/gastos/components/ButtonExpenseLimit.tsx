@@ -10,8 +10,8 @@ export default function ButtonExpenseLimit() {
 
   return (
     <Button 
-        className='bg-green-500 text-white hover:bg-green-400'
-        onClick={()=> openModal('expenseLimit')}
+      className='bg-green-500 flex items-center gap-x-2 text-white px-4 py-2 hover:bg-green-400'
+      onClick={()=> openModal('expenseLimit')}
     >
         <IconCirclePlus />
         Agregar Límite de Gastos
