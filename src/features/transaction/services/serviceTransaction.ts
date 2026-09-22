@@ -22,6 +22,15 @@ class TransactionService {
         }
     }
 
+    async getTransactionsUser(userId: string) {
+        try {
+            const transactions = await this.transactionRepository.selectTransactionsByUser(userId);
+            return { success: true, message: '', transactions }
+        } catch (error) {
+            return { success: false, message: 'Hubor un error al obteenr los datos', transactions: [] }
+        }
+    }
+
     async getTransactionsByUser(userId: string, { page, limit }: PaginationParams) {
         try {
             const transactions = await this.transactionRepository.selectTransactionsUser(userId, { page: page, limit });

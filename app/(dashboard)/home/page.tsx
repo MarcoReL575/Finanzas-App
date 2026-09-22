@@ -10,6 +10,7 @@ import FilterCategories from '@/src/features/transaction/components/FilterCatego
 import FilterReset from '@/src/features/transaction/components/FilterReset'
 import CardStats from '@/src/shared/components/CardStats'
 import { IconCoin, IconTrendingDown, IconTrendingUp } from '@tabler/icons-react'
+import ExpenseLimitSection from '@/src/features/gastos/components/ExpenseLimitSection'
 
 interface Props {
   searchParams: Promise<{ page?: string; limit?: string }>
@@ -47,6 +48,8 @@ export default async function HomePage({ searchParams }: Props) {
         <CardStats titleCard='Total Ingresos' total={data.totalIngresos} type='ingreso' icon={<IconTrendingUp />} />
         <CardStats titleCard='Balance Total' total={data.totalGastos} type='balance' icon={<IconCoin />} />
       </section>
+
+      <ExpenseLimitSection userId={session.user.id} />
       
       <section className=' space-y-5'>
         <h2 className='text-xl font-semibold'>Lista de Transacciones</h2>
@@ -64,7 +67,6 @@ export default async function HomePage({ searchParams }: Props) {
           />
         </HydrationBoundary>
       </section>
-
     </section>
   )
 }

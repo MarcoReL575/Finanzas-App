@@ -6,6 +6,7 @@ import { and, asc, count, desc, eq, sql } from "drizzle-orm";
 export interface IransactionRepository {
     insertTransaction(transaction: InsertTransaction): Promise<void>;
     selectTransactionsUser(userId: string, { page, limit }: PaginationParams): Promise<PaginatedResult<SelectTransaction>>;
+    selectTransactionsByUser(userId: string): Promise<SelectTransaction[]>;
     selectSingleTransaction(userId: string, transactionId: number): Promise<SelectTransaction>;
     deleteSingleTransaction(userId:string, transactionId: number): Promise<void>;
     updateSingleTransaction(userId: string, transaction: InsertTransaction, transId: number): Promise<void>;
@@ -18,6 +19,14 @@ class TransactionRepository implements IransactionRepository {
             .insert(transactionSchema)
             .values(transaction)
     };
+
+    async selectTransactionsByUser(userId: string): Promise<SelectTransaction[]> {
+        const result = await db
+            .select()
+            .from(transactionSchema)
+            .where(eq(transactionSchema.userId, userId))
+        return result
+    }
 
     async selectTransactionsUser(userId: string, { page, limit }: PaginationParams): Promise<PaginatedResult<SelectTransaction>> {
         const offset = (page - 1) * limit;

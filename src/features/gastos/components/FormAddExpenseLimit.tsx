@@ -20,7 +20,7 @@ export default function FormAddExpenseLimit() {
         resolver: zodResolver(budgetSchema),
         mode: 'onBlur',
         defaultValues: {
-            cantidad: '',
+            monto: undefined,
             category: '',
             month: new Date().getMonth() + 1,
             year: new Date().getFullYear(),
@@ -28,7 +28,12 @@ export default function FormAddExpenseLimit() {
     });
 
     const handleCreateLimitExpense = async(data: BudgetFormValues)=> {
-        const { success, message } = await newExpenseLimitAction(data);
+        const montoEnCentavos = Math.round(data.monto * 100);
+        const newData = {
+            ...data,
+            monto: montoEnCentavos
+        }
+        const { success, message } = await newExpenseLimitAction(newData);
         if(!success) {
             toast.error(message);
         }
@@ -58,8 +63,8 @@ export default function FormAddExpenseLimit() {
         {errors.category && <FormError>{errors.category.message}</FormError>}
 
         <FormLabel>Agrega la cantidad límite</FormLabel>
-        <FormInput {...register('cantidad')} type="number" step='0.01' placeholder="0.00" />
-        {errors.cantidad && <FormError>{errors.cantidad.message}</FormError>}
+        <FormInput {...register('monto')} type="number" step='0.01' placeholder="0.00" />
+        {errors.monto && <FormError>{errors.monto.message}</FormError>}
 
         <FormLabel>Selecciona el mes</FormLabel>
         <select

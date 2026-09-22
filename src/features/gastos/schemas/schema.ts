@@ -8,10 +8,7 @@ import { z } from "zod";
 
 export const budgetSchema = z.object({
     category: z.string({ message: "Por favor selecciona una categoría."}).min(1, "La categoría es requerida."),
-    cantidad: z.string().min(1, "El monto es requerido.")
-        .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
-        message: "El monto debe ser un número mayor a 0.",
-        }),
+    monto: z.coerce.number({message: 'Ingresa un monto válido' }).min(0.01, 'El monto debe ser mayor a 0'),
     month: z.number().min(1, "Mes inválido").max(12, "Mes inválido"),
     year: z.number().min(2024, "Año inválido"),
 });
@@ -19,4 +16,4 @@ export const budgetSchema = z.object({
 
 export const InsertBudgetSchema = budgetSchema.extend({
     userId: z.string().min(1, "El usuario no existe"),
-})
+});
