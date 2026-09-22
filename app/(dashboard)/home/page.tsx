@@ -11,6 +11,7 @@ import FilterReset from '@/src/features/transaction/components/FilterReset'
 import CardStats from '@/src/shared/components/CardStats'
 import { IconCoin, IconTrendingDown, IconTrendingUp } from '@tabler/icons-react'
 import ExpenseLimitSection from '@/src/features/gastos/components/ExpenseLimitSection'
+import FilterSearch from '@/src/features/transaction/components/FilterSearch'
 
 interface Props {
   searchParams: Promise<{ page?: string; limit?: string }>
@@ -41,6 +42,7 @@ export default async function HomePage({ searchParams }: Props) {
 
   return (
     <section className='flex flex-col w-full space-y-10 max-w-6xl mx-auto'>
+      <h1 className='font-bold text-4xl text-center'>Lleva un control de tus Gastos con AppTracker</h1>
       <ButtonAddTransaction />
 
       <section className='grid grid-cols-3 gap-x-5'>
@@ -51,13 +53,18 @@ export default async function HomePage({ searchParams }: Props) {
 
       <ExpenseLimitSection userId={session.user.id} />
       
-      <section className=' space-y-5'>
+      <section className=' space-y-4 bg-white p-4 rounded-lg pb-10'>
         <h2 className='text-xl font-semibold'>Lista de Transacciones</h2>
-        <div className='flex items-center justify-between w-full mx-auto gap-x-4'>
-          <FilterMyDatePicker />
-          <FilerSelectTransaction />
-          <FilterCategories />
-          <FilterReset />
+        <div className='space-y-4'>
+          <div className='grid grid-cols-4 gap-4'>
+            <FilterMyDatePicker />
+            <FilerSelectTransaction />
+            <FilterCategories />
+            <FilterReset />
+          </div>
+          <div className='flex items-center justify-between gap-x-4'>
+            <FilterSearch limit={limit} />
+          </div>
         </div>
         <HydrationBoundary state={dehydrate(queryClient)}>
           <GridTransactions 

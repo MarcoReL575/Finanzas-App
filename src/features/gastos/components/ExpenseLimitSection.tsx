@@ -52,7 +52,7 @@ export default async function ExpenseLimitSection({ userId }: Props) {
     });
 
     return (
-        <section className='bg-gray-100 rounded-lg p-4 space-y-5 '>
+        <section className='bg-white rounded-lg p-4 space-y-5 '>
             <div className='flex items-center justify-between'>
                 <h3 className='font-semibold text-xl'>Límites del Mes</h3>
                 <ButtonExpenseLimit />

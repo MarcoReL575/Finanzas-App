@@ -5,11 +5,6 @@ import { getTransactionByUserAction } from '../actions/transactionActions';
 import { useFilterStore } from '@/src/shared/stores/filterStore'
 import CardTransaction from './CardTransaction'
 import PaginationComponent from '@/src/shared/components/PaginationComponent';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/src/shared/ui/select';
-import { useCallback, useState } from 'react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { Route } from 'next';
-import SearchFilters from './SearchFilters';
 
 interface Props {
     userId: string;
@@ -17,12 +12,8 @@ interface Props {
     limit: number;
 }
 
-const PAGE_SIZE_OPTIONS = [3, 5, 10, 15, 20] as const
-
 export default function GridTransactions({ userId, limit, page }: Props) {
-    const router = useRouter();
-    const pathname = usePathname();
-    const searchParams = useSearchParams();
+    
     const { valueType, valueCategory, dateRange, valueFilter } = useFilterStore();
 
     const { data, isFetching, isPlaceholderData } = useQuery({
@@ -31,13 +22,6 @@ export default function GridTransactions({ userId, limit, page }: Props) {
         placeholderData: keepPreviousData, 
         staleTime: 60 * 1000, // 1 minuto
     });
-
-    const handleLimitChange = useCallback((newLimit: string) => {
-        const params = new URLSearchParams(searchParams.toString())
-        params.set('limit', newLimit)
-        params.set('page', '1') // ← importante: resetear a la primera página
-        router.push(`${pathname}?${params.toString()}` as Route)
-    },[router, pathname, searchParams])
 
     const filteredTransactions = data?.items.filter((transaction)=> {
         const matchType = valueType === 'all' || transaction.tipo === valueType
@@ -56,31 +40,8 @@ export default function GridTransactions({ userId, limit, page }: Props) {
        )
    }
 
-   
   return (
-    <section className='space-y-5 w-full mx-auto'>
-        <div className='flex w-full gap-x-4'>
-            <div className='w-2/3'>
-                <SearchFilters />
-            </div>
-            <div className='flex w-1/3 items-center justify-start text-xs font-semibold gap-x-2'>
-                <Select value={String(limit)} onValueChange={handleLimitChange} >
-                    <SelectTrigger className="w-fit">
-                        <SelectValue placeholder="3 " />
-                    </SelectTrigger>
-                    <SelectContent className='bg-white'>
-                        {
-                            PAGE_SIZE_OPTIONS.map((size)=>(
-                            <SelectItem key={size} value={String(size)}>
-                                {size}
-                            </SelectItem>
-                            ))
-                        }
-                    </SelectContent>
-                </Select>
-                <span>Elementos por página</span>
-            </div>
-        </div>
+    <section className='space-y-5 w-full mx-auto bg-white p-4 rounded-lg'>
         <ul className='flex flex-col gap-y-4'>
             { filteredTransactions && filteredTransactions.map((transaction)=> (
                     <CardTransaction key={transaction.id} transaction={transaction} />

@@ -33,7 +33,7 @@ export default async function ItemExpenseLimit({item}: Props) {
         </div>
 
         <div className='space-y-1.5'>
-            <div className='w-full bg-white h-2.5 rounded-full overflow-hidden'>
+            <div className='w-full bg-gray-200 h-2.5 rounded-full overflow-hidden'>
                 <div
                     className={`h-full transition-all duration-500 ${progressBg}`}
                     style={{ width: `${Math.min(item.percentage, 100)}%` }}
