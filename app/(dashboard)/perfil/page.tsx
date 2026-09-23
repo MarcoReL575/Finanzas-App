@@ -3,7 +3,7 @@ import { transactionService } from "@/src/features/transaction/services/serviceT
 import { UserSession } from "@/src/lib/authServer";
 import { redirect } from "next/navigation";
 
-export default async function GastosPage() {
+export default async function PerfilPage() {
   const session = await UserSession();
   if(!session?.user.id) redirect('/auth/signin');
 
@@ -11,8 +11,7 @@ export default async function GastosPage() {
 
   return (
     <section className='space-y-10'>
-      <h1 className='text-4xl font-semibold text-center'>Agrega y da seguimiento a tus gastos</h1>
-      <ChartBar transactionsLista={transactions} />
+      <h1 className='text-4xl font-semibold text-center'>Mi Perfil</h1>
     </section>
   )
 }
