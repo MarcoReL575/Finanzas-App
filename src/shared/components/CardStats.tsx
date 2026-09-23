@@ -15,9 +15,9 @@ export default function CardStats({ titleCard, total, icon, type }: Props) {
     console.log(total)
 
   return (
-    <div className={clsx('border-2 w-full p-4 rounded-lg h-40 flex flex-col justify-around', {
-        'text-red-500 border-red-800 bg-red-100' : type === 'gasto',
-        'text-green-500 border-green-800 bg-green-100': balancePositivo === true,
+    <div className={clsx('border-2 w-full p-4 rounded-lg h-40 flex flex-col justify-around bg-white', {
+        'text-red-500 border-red-300' : type === 'gasto',
+        'text-green-500 border-green-300': balancePositivo === true,
     })}>
         <div className='flex items-center justify-center'>
             <span className='flex items-center justify-center rounded-full bg-white border-2 border-gray-500 w-fit p-2'>

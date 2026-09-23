@@ -12,12 +12,13 @@ import CardStats from '@/src/shared/components/CardStats'
 import { IconCoin, IconTrendingDown, IconTrendingUp } from '@tabler/icons-react'
 import ExpenseLimitSection from '@/src/features/gastos/components/ExpenseLimitSection'
 import FilterSearch from '@/src/features/transaction/components/FilterSearch'
+import ChartBar from '@/src/features/gastos/components/ChartBar'
 
 interface Props {
   searchParams: Promise<{ page?: string; limit?: string }>
 }
 
-const DEFAULT_LIMIT = 3;
+const DEFAULT_LIMIT = 5;
 const ALLOWED_LIMITS = [3, 5, 10, 15, 20];
 
 export default async function HomePage({ searchParams }: Props) {
@@ -39,20 +40,12 @@ export default async function HomePage({ searchParams }: Props) {
   })
 
   const { success, message, data } = await transactionService.getBalanceSummary(session.user.id); 
+  const { transactions } = await transactionService.getTransactionsUser(session.user.id);
 
   return (
     <section className='flex flex-col w-full space-y-10 max-w-6xl mx-auto'>
       <h1 className='font-bold text-4xl text-center'>Lleva un control de tus Gastos con AppTracker</h1>
       <ButtonAddTransaction />
-
-      <section className='grid grid-cols-3 gap-x-5'>
-        <CardStats titleCard='Total Gastos' total={data.totalGastos} type='gasto' icon={<IconTrendingDown />} />
-        <CardStats titleCard='Total Ingresos' total={data.totalIngresos} type='ingreso' icon={<IconTrendingUp />} />
-        <CardStats titleCard='Balance Total' total={data.totalGastos} type='balance' icon={<IconCoin />} />
-      </section>
-
-      <ExpenseLimitSection userId={session.user.id} />
-      
       <section className=' space-y-4 bg-white p-4 rounded-lg pb-10'>
         <h2 className='text-xl font-semibold'>Lista de Transacciones</h2>
         <div className='space-y-4'>
@@ -73,6 +66,12 @@ export default async function HomePage({ searchParams }: Props) {
             limit={limit}
           />
         </HydrationBoundary>
+      </section>
+      
+      <ExpenseLimitSection userId={session.user.id} />
+
+      <section >
+        <ChartBar transactionsLista={transactions} />
       </section>
     </section>
   )
