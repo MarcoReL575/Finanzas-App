@@ -1,8 +1,9 @@
-import { SignIn, UserAccount, UserInsert } from "../types/types";
+import { SignIn, UpdatePasswordUser, UserAccount, UserInsert } from "../types/types";
 import { ISignRepository, signRepository } from "./signRepository";
 import { insertUserSchema, SignUpSchema } from "../schema/schema";
 import { auth } from "@/src/lib/auth";
 import { UserSession } from "@/src/lib/authServer";
+import { authClient } from "@/src/lib/auth-client";
 
 class SignService {
     constructor (
@@ -53,6 +54,21 @@ class SignService {
         } catch (error) {   
             console.error(error)
             return { success: false, message: 'Error al crear usuario'}
+        }
+    }
+
+    async updatePasswordUser(data: UpdatePasswordUser) {
+        const { currentPassword, newPassword, confirmPassword } = data
+        try {
+            await authClient.changePassword({
+                currentPassword,
+                newPassword,
+                revokeOtherSessions: true,
+            })
+            return { success: true, message: 'La contraseña se ha actualizado' }  
+        } catch (error) {
+            return { success: false, message: 'Ha ocurrido un problema' }  
+            
         }
     }
 }

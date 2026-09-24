@@ -18,3 +18,12 @@ export const SignInSchema = z.object({
 })
 
 export const insertUserSchema = createInsertSchema(user);
+
+export const UpdatePasswordUserSchema = z.object({
+    currentPassword:  z.string().min(6, {message: 'El password no puede tener menos de 6 caracteres'}),
+    newPassword:  z.string().min(6, {message: 'El password no puede tener menos de 6 caracteres'}), 
+    confirmPassword: z.string()
+}).refine((data)=> data.confirmPassword === data.newPassword, {
+    message: 'Las contraseñas no coinciden',
+    path: ["confirmPassword"]
+})
