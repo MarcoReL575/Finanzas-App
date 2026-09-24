@@ -1,0 +1,1 @@
+ALTER TABLE "budgets" ALTER COLUMN "cantidad" SET DATA TYPE integer USING "cantidad"::integer;
