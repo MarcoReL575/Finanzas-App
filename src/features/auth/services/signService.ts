@@ -1,8 +1,7 @@
-import { SignIn, UpdatePasswordUser, UserAccount, UserInsert } from "../types/types";
+import { SignIn, UpdatePasswordUser, UserAccount } from "../types/types";
 import { ISignRepository, signRepository } from "./signRepository";
-import { insertUserSchema, SignUpSchema } from "../schema/schema";
+import { SignUpSchema } from "../schema/schema";
 import { auth } from "@/src/lib/auth";
-import { UserSession } from "@/src/lib/authServer";
 import { authClient } from "@/src/lib/auth-client";
 
 class SignService {
@@ -28,7 +27,7 @@ class SignService {
 
     async signIn(userInfo: SignIn) {
         const { password, email } = userInfo;
-        const userExists = signRepository.selectUser(userInfo);
+        const userExists = await this.signRepository.selectUser(userInfo);
         if(!userExists) return { success: false, message: 'El usuario no existe' }
 
         try {
