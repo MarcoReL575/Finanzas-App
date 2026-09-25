@@ -1,7 +1,7 @@
+
 import { db } from "@/src/db";
-import { UserInsert, UserAccount, UserSelect, SignIn } from "../types/types";
+import { UserSelect, SignIn } from "../types/types";
 import { user } from "@/src/db/schema/auth-schema";
-import { User } from "better-auth";
 import { eq } from "drizzle-orm";
 
 export interface ISignRepository {
