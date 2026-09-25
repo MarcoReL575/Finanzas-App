@@ -4,7 +4,7 @@ import { SignUpSchema } from "../schema/schema";
 import { auth } from "@/src/lib/auth";
 import { authClient } from "@/src/lib/auth-client";
 
-class SignService {
+export class SignService {
     constructor (
         private signRepository: ISignRepository
     ) {}
@@ -38,7 +38,7 @@ class SignService {
                 },
                 asResponse: true
             })
-            return { success: true, message: `Bienvenido de nuevo ${(await userExists).name}`}
+            return { success: true, message: `Bienvenido de nuevo ${userExists.name}`}
         } catch (error) {
             return { success: false, message: 'Error al iniciar sesión' }
         }
