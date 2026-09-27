@@ -1,15 +1,15 @@
 
 import { db } from "@/src/db";
 import { UserSelect, SignIn } from "../types/types";
-import { user } from "@/src/db/schema/auth-schema";
+import { user } from "../../../db/schema/auth-schema";
 import { eq } from "drizzle-orm";
 
 export interface ISignRepository {
-    selectUser(userInfo: SignIn): Promise<UserSelect>;
+    selectUser(userInfo: SignIn): Promise<UserSelect | undefined>;
 }
 
 
-class SignRepository implements ISignRepository {
+export class SignRepository implements ISignRepository {
     async selectUser(userInfo: SignIn): Promise<UserSelect> {
         const [result] = await db
             .select()
