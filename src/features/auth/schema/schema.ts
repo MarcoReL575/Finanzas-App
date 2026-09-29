@@ -13,7 +13,7 @@ export const SignUpSchema = z.object({
 })
 
 export const SignInSchema = z.object({
-    email: z.string().min(1, {message: 'El correo no puede ir vacío'}),
+    email: z.string().email({ message: 'Ingresa un email válido' }).min(1, {message: 'El correo no puede ir vacío'}),
     password: z.string().min(6, {message: 'El password no puede tener menos de 6 caracteres'}),
 })
 
