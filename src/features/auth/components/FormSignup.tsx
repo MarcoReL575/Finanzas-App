@@ -37,19 +37,19 @@ export default function FormSignup() {
   return (
     <FormComponent className='flex flex-col max-w-md border rounded-lg p-8' onSubmit={handleSubmit(handleSignUp)}>
       <FormLabel>Nombre de usuario</FormLabel>
-      <FormInput { ...register('name') } type='text' placeholder='Usuario5756' />
+      <FormInput { ...register('name') } data-testid='name' type='text' placeholder='Usuario5756' />
       {errors.name && <FormError>{errors.name.message}</FormError>}
 
       <FormLabel>Correo</FormLabel>
-      <FormInput { ...register('email') } type='text' placeholder='correo@correo.com' />
+      <FormInput { ...register('email') } data-testid='email' type='text' placeholder='correo@correo.com' />
       {errors.email && <FormError>{errors.email.message}</FormError>}
 
       <FormLabel>Password</FormLabel>
-      <FormInput { ...register('password') } type='password' placeholder='Pa$$owd&' />
+      <FormInput { ...register('password') } data-testid='password' type='password' placeholder='Pa$$owd&' />
       {errors.password && <FormError>{errors.password.message}</FormError>}
 
       <FormLabel>Confirma tu password</FormLabel>
-      <FormInput { ...register('confirmPassword') } type='password' placeholder='Pa$$owd&' />
+      <FormInput { ...register('confirmPassword') } data-testid='confirmPassword' type='password' placeholder='Pa$$owd&' />
       {errors.confirmPassword && <FormError>{errors.confirmPassword.message}</FormError>}
 
       <FormSubmit>
