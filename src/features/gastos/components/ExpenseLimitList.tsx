@@ -14,7 +14,7 @@ export default function ExpenseLimitList({ budgetItems }: Props) {
             </p>
         ) : (
             budgetItems.map((item) => (
-                <ItemExpenseLimit key={item.id} item={item} />
+                <ItemExpenseLimit key={item.id} item={item} data-testid={`expense-limit-item-${item.id}`}/>
             ))
         )}
     </div>
