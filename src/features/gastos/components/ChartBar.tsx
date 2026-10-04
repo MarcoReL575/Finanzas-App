@@ -92,7 +92,7 @@ export default function ChartBar({ transactionsLista }: Props) {
                     </div>
                 ) : (
                     <div className="w-full h-87">
-                        <ResponsiveContainer width="100%" height="100%">
+                        <ResponsiveContainer width="100%" height="100%" data-testid="responsive-container">
                             <BarChart
                                 data={chartData}
                                 margin={{ top: 10, right: 10, left: 10, bottom: 25 }}
