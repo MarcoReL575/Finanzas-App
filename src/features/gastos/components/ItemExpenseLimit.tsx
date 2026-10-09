@@ -35,6 +35,7 @@ export default async function ItemExpenseLimit({item}: Props) {
         <div className='space-y-1.5'>
             <div className='w-full bg-gray-200 h-2.5 rounded-full overflow-hidden'>
                 <div
+                    data-testid='progresBar'
                     className={`h-full transition-all duration-500 ${progressBg}`}
                     style={{ width: `${Math.min(item.percentage, 100)}%` }}
                 />
@@ -46,7 +47,7 @@ export default async function ItemExpenseLimit({item}: Props) {
                 <span className=''>
                     {item.isExceeded ? (
                         <strong className='font-medium'>
-                            Excedido por {formatCurrency(Math.abs(item.remainingAmount))}
+                            Excedido por <span>{formatCurrency(Math.abs(item.remainingAmount))}</span>
                         </strong>
                     ) : (
                         <>Restante: <strong className='text-slate-500 font-medium'>{formatCurrency(item.remainingAmount)}</strong></>
