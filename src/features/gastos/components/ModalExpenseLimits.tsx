@@ -15,6 +15,7 @@ export default function ModalExpenseLimits() {
                 <DialogPanel className=" relative max-w-lg border bg-white p-12 rounded-lg">
                     <div className="absolute right-4 top-4">
                         <Button 
+                            data-testid='closeModalExpense'
                             className='bg-red-500 rounded-full p-2 hover:bg-red-400 text-white transition-all duration-300' 
                             onClick={closeModal}
                         >

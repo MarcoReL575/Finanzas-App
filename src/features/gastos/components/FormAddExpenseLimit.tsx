@@ -49,6 +49,7 @@ export default function FormAddExpenseLimit() {
         <FormLabel>Agrega una categoría</FormLabel>
         <select 
             {...register('category')}
+            data-testid='label-category'
             className="w-full border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none disabled:opacity-50"
         >
             <option value="">Selecciona una categoría</option>
@@ -63,12 +64,13 @@ export default function FormAddExpenseLimit() {
         {errors.category && <FormError>{errors.category.message}</FormError>}
 
         <FormLabel>Agrega la cantidad límite</FormLabel>
-        <FormInput {...register('monto')} type="number" step='0.01' placeholder="0.00" />
+        <FormInput {...register('monto')} type="number" step='0.01' placeholder="0.00" data-testid='label-limit' />
         {errors.monto && <FormError>{errors.monto.message}</FormError>}
 
         <FormLabel>Selecciona el mes</FormLabel>
         <select
             {...register('month', { valueAsNumber: true })}
+            data-testid='label-month'
             className="w-full border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none disabled:opacity-50"
           >
             {MONTHS.map((monthName, idx) => (
@@ -83,6 +85,7 @@ export default function FormAddExpenseLimit() {
         <FormInput
             {...register('year', { valueAsNumber: true })}
             type="number"
+             data-testid='label-year'
             placeholder="Ej: 2026"
         />
         {errors.year && <FormError>{errors.year.message}</FormError>}
