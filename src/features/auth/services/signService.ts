@@ -36,7 +36,6 @@ export class SignService {
                     email,
                     password
                 },
-                asResponse: true
             })
             return { success: true, message: `Bienvenido de nuevo ${userExists.name}`}
         } catch (error) {

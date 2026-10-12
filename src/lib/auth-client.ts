@@ -1,6 +1,6 @@
 import { createAuthClient } from "better-auth/react"
 
-export const authClient = createAuthClient({
-    /** The base URL of the server (optional if you're using the same domain) */
-    baseURL: process.env.BETTER_AUTH_URL!
-})
+// Sin baseURL: el cliente usa el mismo origen del navegador.
+// BETTER_AUTH_URL no está disponible aquí porque este módulo corre en el
+// browser y esa variable no tiene el prefijo NEXT_PUBLIC_.
+export const authClient = createAuthClient()

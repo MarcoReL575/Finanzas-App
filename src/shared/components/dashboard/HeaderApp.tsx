@@ -7,7 +7,7 @@ import Link from 'next/link';
 export default async function HeaderApp() {
 
   const session = await UserSession()
-  if(!session?.user) redirect('/auth/signup');
+  if(!session?.user) redirect('/auth/signin');
 
   return (
     <header className='fixed bg-gray-900 top-0 left-0 right-0 z-50 flex items-center justify-between w-full px-10 py-2 text-white'>
