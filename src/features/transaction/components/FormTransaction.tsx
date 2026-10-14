@@ -130,7 +130,7 @@ export default function FormTransaction() {
                 onSubmit={handleSubmit(handleCreateTransaction)}
             >
                 <FormLabel>Monto</FormLabel>
-                <FormInput {...register('monto')} type='number' min={0} placeholder='$500' />
+                <FormInput {...register('monto')} type='number' min={0} step='0.01' placeholder='$500' />
                 {errors.monto && <FormError>{errors.monto.message}</FormError>}
 
                 <FormLabel>Categoría</FormLabel>
