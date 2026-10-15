@@ -29,7 +29,7 @@ export default function PaginationComponent({ limit, page, data, isPlaceholderDa
         const params = new URLSearchParams(searchParams.toString())
         params.set('page', String(newPage))
         router.push(`${pathname}?${params.toString()}` as Route)
-    }, [router, pathname, searchParams]);
+    }, [router, pathname, searchParams, totalPages]);
 
     // Prefetch de la página siguiente
     useEffect(() => {
@@ -48,9 +48,14 @@ export default function PaginationComponent({ limit, page, data, isPlaceholderDa
 
         const pages: (number | 'ellipsis')[] = []
         const siblingCount = 1 // cuántas páginas a cada lado de la actual
+        const blockSize = 5 // páginas seguidas que se muestran junto a una elipsis
 
         const range = (start: number, end: number) =>
         Array.from({ length: end - start + 1 }, (_, i) => start + i)
+
+        // Si caben todas (bloque + primera + última) no hay elipsis.
+        // Evita números repetidos (keys duplicadas) o fuera de rango como 0 o totalPages + 1
+        if (totalPages <= blockSize + 2) return range(1, totalPages)
 
         const leftSibling = Math.max(page - siblingCount, 1)
         const rightSibling = Math.min(page + siblingCount, totalPages)
@@ -59,17 +64,14 @@ export default function PaginationComponent({ limit, page, data, isPlaceholderDa
         const showRightEllipsis = rightSibling < totalPages - 1
 
         if (!showLeftEllipsis && showRightEllipsis) {
-            pages.push(...range(1, 5), 'ellipsis', totalPages)
             // Ej: 1 2 3 4 5 ... 20
+            pages.push(...range(1, blockSize), 'ellipsis', totalPages)
         } else if (showLeftEllipsis && !showRightEllipsis) {
             // Ej: 1 ... 16 17 18 19 20
-            pages.push(1, 'ellipsis', ...range(totalPages - 4, totalPages))
-        } else if (showLeftEllipsis && showRightEllipsis) {
+            pages.push(1, 'ellipsis', ...range(totalPages - blockSize + 1, totalPages))
+        } else {
             // Ej: 1 ... 9 10 11 ... 20
             pages.push(1, 'ellipsis', ...range(leftSibling, rightSibling), 'ellipsis', totalPages)
-        } else {
-            // Pocas páginas: 1 2 3 4
-            pages.push(...range(1, totalPages))
         }
 
         return pages
