@@ -1,6 +1,7 @@
 import { IconAlertCircle } from '@tabler/icons-react';
 import { BudgetDisplayItem, SelectLimiteGasto } from '../types/types';
 import { formatCurrency } from '@/src/shared/helper/formatCurrency';
+import DropdownActionsGastoLimit from './DropdownActionsGastoLimit';
 
 interface Props {
     item: BudgetDisplayItem;
@@ -41,10 +42,13 @@ export default async function ItemExpenseLimit({item}: Props) {
                 />
             </div>
             <div className='flex justify-between items-center text-xs'>
-                <span className={`font-semibold ${textColor}`}>
-                    {item.percentage}% consumido
-                </span>
-                <span className=''>
+                <div className={`font-semibold ${textColor} w-full items-center space-x-5`}>
+                    <span>{item.percentage}% consumido</span>
+                    <span>
+                        <DropdownActionsGastoLimit gastoLimitId={item.id} />
+                    </span>
+                </div>
+                <div className=''>
                     {item.isExceeded ? (
                         <strong className='font-medium'>
                             Excedido por <span>{formatCurrency(Math.abs(item.remainingAmount))}</span>
@@ -52,7 +56,7 @@ export default async function ItemExpenseLimit({item}: Props) {
                     ) : (
                         <>Restante: <strong className='text-slate-500 font-medium'>{formatCurrency(item.remainingAmount)}</strong></>
                     )}
-                </span>
+                </div>
             </div>
         </div>
     </div>

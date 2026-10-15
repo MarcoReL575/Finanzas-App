@@ -28,6 +28,15 @@ export class GastoService {
         }
     }
 
+    async deleteUserExpenseLimit(userId: string, limitId: string) {
+        try {
+            await this.gastoRepository.deleteExpenseLimitUser(userId, limitId);
+            return { success: true, message:'El límite de gasto se ha eliminado correctamente' } 
+        } catch (error) {
+            return { success: false, message:'Error al eliminar el Limite de Gasto' } 
+        }
+    }
+
 }
 
 export const gastoService = new GastoService(gastoRepository);
