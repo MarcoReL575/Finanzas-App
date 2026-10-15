@@ -20,7 +20,7 @@ export default async function ItemExpenseLimit({item}: Props) {
     }
 
   return (
-    <div className="space-y-1.5">
+    <div className="space-y-1.5" data-testid={`expense-limit-${item.category}`}>
         <div className='flex items-center justify-between gap-3'>
             <div className='p-2 gap-x-2 capitalize bg-white text-emerald-400 rounded-lg flex items-center justify-center shrink-0 [&>svg]:w-6 [&>svg]:h-6'>
                 {item.categoryIcon} {item.categoryLabel}
