@@ -1,11 +1,12 @@
 import { db } from "@/src/db";
 import { InsertLimiteGasto, SelectLimiteGasto } from "../types/types";
 import { budgets } from "@/src/db/schema";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 export interface IGastoRepository {
     insertExpenseLimit(expense: InsertLimiteGasto): Promise<void>;
-    selectUserExpenseLimits(userId: string): Promise<SelectLimiteGasto[]>
+    selectUserExpenseLimits(userId: string): Promise<SelectLimiteGasto[]>;
+    deleteExpenseLimitUser(userId: string, limitId: string): Promise<void>;
 }
 
 class GastoRepository implements IGastoRepository {
@@ -21,6 +22,17 @@ class GastoRepository implements IGastoRepository {
            .from(budgets)
            .where(eq(budgets.userId, userId))
         return budgetsList;
+    }
+
+    async deleteExpenseLimitUser(userId: string, limitId: string): Promise<void> {
+        await db
+            .delete(budgets)
+            .where(
+                and(
+                    eq(budgets.id, limitId),
+                    eq(budgets.userId, userId)
+                )
+            )
     }
 }
 

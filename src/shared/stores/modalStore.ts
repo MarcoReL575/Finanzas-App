@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-export type ModalType = 'formTransaction' | 'deleteTransaction' | 'expenseLimit' | null;
+export type ModalType = 'formTransaction' | 'deleteTransaction' | 'expenseLimit' | 'deleteExpenseLimit' | null;
 
 interface ModalStore {
     type: ModalType;

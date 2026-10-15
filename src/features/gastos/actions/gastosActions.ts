@@ -10,3 +10,10 @@ export async function newExpenseLimitAction(expense: BudgetFormValues) {
 
     return gastoService.createExpenseLimit(expense, session.user.id);
 }
+
+export async function deleteGastoLimitAction(limitId: string) {
+    const session = await UserSession();
+    if(!session?.user.id) return { success: false, message: 'El usuario no cuenta con una sesión' }
+
+    return gastoService.deleteUserExpenseLimit(session.user.id, limitId);
+};
