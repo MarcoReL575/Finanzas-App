@@ -3,13 +3,22 @@ import { Description, Dialog, DialogPanel, DialogTitle, DialogBackdrop } from '@
 import FormAddExpenseLimit from './FormAddExpenseLimit';
 import { Button } from '@/src/shared/ui/button';
 import { IconX } from '@tabler/icons-react';
+import { useExpenseLimit } from '@/src/shared/stores/useExpenseLimit';
 
 export default function ModalExpenseLimits() {
     const isOpen = useModalStore((state)=> state.isOpen);
     const closeModal = useModalStore((state)=> state.closeModal);
+    const setExpenseLimitToEdit = useExpenseLimit((state)=> state.setExpenseLimitToEdit);
+
+    // Se limpia el límite en edición al cerrar (X, Escape o clic fuera),
+    // para que la siguiente apertura no traiga datos del límite anterior
+    const handleCloseModal = ()=> {
+        setExpenseLimitToEdit(undefined);
+        closeModal();
+    }
 
     return (
-        <Dialog open={isOpen} onClose={closeModal} className="relative z-50">
+        <Dialog open={isOpen} onClose={handleCloseModal} className="relative z-50">
             <DialogBackdrop className="fixed inset-0 bg-black/40" />
             <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
                 <DialogPanel className=" relative max-w-lg border bg-white p-12 rounded-lg">
@@ -17,7 +26,7 @@ export default function ModalExpenseLimits() {
                         <Button 
                             data-testid='closeModalExpense'
                             className='bg-red-500 rounded-full p-2 hover:bg-red-400 text-white transition-all duration-300' 
-                            onClick={closeModal}
+                            onClick={handleCloseModal}
                         >
                            <IconX />
                         </Button>

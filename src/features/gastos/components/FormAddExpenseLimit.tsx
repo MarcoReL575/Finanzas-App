@@ -3,28 +3,40 @@
 import { FormComponent, FormError, FormInput, FormLabel, FormSubmit } from "@/src/shared/components/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useMemo } from "react";
 import { listaGastos } from "@/src/category";
 import { MONTHS } from "@/src/months";
 import { IconCheck } from "@tabler/icons-react";
 import { budgetSchema } from "../schemas/schema";
 import { BudgetFormValues } from "../types/types";
-import { newExpenseLimitAction } from "../actions/gastosActions";
+import { editGastoLimitAction, newExpenseLimitAction } from "../actions/gastosActions";
 import toast from "react-hot-toast";
 import { useModalStore } from "@/src/shared/stores/modalStore";
+import { useExpenseLimit } from "@/src/shared/stores/useExpenseLimit";
+import { useRouter } from "next/navigation";
 
 export default function FormAddExpenseLimit() {
 
     const closeModal = useModalStore((state)=> state.closeModal);
+    const expenseLimitToEdit = useExpenseLimit((state)=> state.expenseLimitToEdit);
+    const setExpenseLimitToEdit = useExpenseLimit((state)=> state.setExpenseLimitToEdit);
+    const isEditing = Boolean(expenseLimitToEdit?.id);
+    const router = useRouter();
+
+    // Valores del formulario: los del límite a editar o valores vacíos para crear uno nuevo.
+    // Se usa `values` (y no solo defaultValues) para que el formulario se actualice si cambia el límite seleccionado
+    const formValues = useMemo(()=> ({
+        // El monto se guarda en centavos, en el formulario se muestra en pesos
+        monto: expenseLimitToEdit ? expenseLimitToEdit.monto / 100 : undefined,
+        category: expenseLimitToEdit?.category ?? '',
+        month: expenseLimitToEdit?.month ?? new Date().getMonth() + 1,
+        year: expenseLimitToEdit?.year ?? new Date().getFullYear(),
+    }), [expenseLimitToEdit]);
 
     const { register, formState: { errors }, handleSubmit } = useForm({
         resolver: zodResolver(budgetSchema),
         mode: 'onBlur',
-        defaultValues: {
-            monto: undefined,
-            category: '',
-            month: new Date().getMonth() + 1,
-            year: new Date().getFullYear(),
-        }
+        values: formValues,
     });
 
     const handleCreateLimitExpense = async(data: BudgetFormValues)=> {
@@ -33,14 +45,20 @@ export default function FormAddExpenseLimit() {
             ...data,
             monto: montoEnCentavos
         }
-        const { success, message } = await newExpenseLimitAction(newData);
+
+        const { success, message } = isEditing
+            ? await editGastoLimitAction(expenseLimitToEdit!.id, newData)
+            : await newExpenseLimitAction(newData);
+
         if(!success) {
             toast.error(message);
+            return;
         }
-        if(success) {
-            toast.success(message);
-            closeModal();
-        }
+
+        router.refresh();
+        toast.success(message);
+        setExpenseLimitToEdit(undefined);
+        closeModal();
     }
 
   return (
@@ -92,7 +110,7 @@ export default function FormAddExpenseLimit() {
 
         <FormSubmit>
             <IconCheck />
-            Agregar Límite
+            {isEditing ? 'Editar Límite' : 'Agregar Límite'}
         </FormSubmit>
     </FormComponent>
   )

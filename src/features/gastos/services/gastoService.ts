@@ -1,4 +1,4 @@
-import { BudgetFormValues } from "../types/types";
+import { BudgetFormValues, InsertLimiteGasto, SelectLimiteGasto } from "../types/types";
 import { gastoRepository, IGastoRepository } from "./gastoRepository";
 
 export class GastoService {
@@ -34,6 +34,28 @@ export class GastoService {
             return { success: true, message:'El límite de gasto se ha eliminado correctamente' } 
         } catch (error) {
             return { success: false, message:'Error al eliminar el Limite de Gasto' } 
+        }
+    }
+
+    async updateExpenseLimit(userId: string, limit: BudgetFormValues, currentLimitId: string) {
+        const data = {
+            ...limit,
+            userId,
+        }
+        try {
+            await this.gastoRepository.setExpenseLimit(userId, data, currentLimitId);
+            return { success: true, message:'El límite de gasto se ha actualizado ' }        
+        } catch (error) {
+            return { success: false, message:'El límite de gasto no se pudo actualizar ' }
+        }
+    };
+
+    async expenseLimit(userId: string, limitId: string) {
+        try {
+            const expenseLimit = await this.gastoRepository.selectExpenseLimit(userId, limitId);
+            return { success: true, message:'El límite de gasto se ha actualizado ', expenseLimit }        
+        } catch (error) {
+            return { success: false, message:'El límite de gasto no se pudo actualizar ', expenseLimit: {} as SelectLimiteGasto }
         }
     }
 
