@@ -8,7 +8,7 @@ export interface IGastoRepository {
     selectUserExpenseLimits(userId: string): Promise<SelectLimiteGasto[]>;
     deleteExpenseLimitUser(userId: string, limitId: string): Promise<void>;
     selectExpenseLimit(userId: string, limitId: string): Promise<SelectLimiteGasto>;
-    setExpenseLimit(userId: string, limit: SelectLimiteGasto): Promise<SelectLimiteGasto>;
+    setExpenseLimit(userId: string, limit: InsertLimiteGasto, currentLimitId: string): Promise<void>;
 }
 
 class GastoRepository implements IGastoRepository {
@@ -50,13 +50,12 @@ class GastoRepository implements IGastoRepository {
         return existExpenseLimit;
     }
 
-    async setExpenseLimit(userId: string, limit: SelectLimiteGasto): Promise<SelectLimiteGasto> {
-        const [result] = await db
+    async setExpenseLimit(userId: string, limit: InsertLimiteGasto, currentLimitId: string): Promise<void> {
+        await db
             .update(budgets)
             .set({
                 id: limit.id,
                 category: limit.category,
-                createdAt: limit.createdAt,
                 month: limit.month,
                 monto: limit.monto,
                 userId: limit.userId,
@@ -65,11 +64,9 @@ class GastoRepository implements IGastoRepository {
             .where(
                 and(
                     eq(budgets.userId, userId),
-                    eq(budgets.id, limit.id)
+                    eq(budgets.id, currentLimitId)
                 )
             )
-            .returning();
-        return result;
     }
 }
 

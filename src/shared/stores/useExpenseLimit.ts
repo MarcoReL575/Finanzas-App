@@ -6,8 +6,8 @@ interface ExpenseLimit {
     expenseLimitId: string;
     setExpenseLimitId: (expenseLimitId: string)=> void;
 
-    expenseLimitToEdit: SelectLimiteGasto,
-    setExpenseLimitToEdit: (expenseLimitToEdit: SelectLimiteGasto)=> void;
+    expenseLimitToEdit: SelectLimiteGasto | undefined,
+    setExpenseLimitToEdit: (expenseLimitToEdit: SelectLimiteGasto | undefined)=> void;
 }
 
 export const useExpenseLimit = create<ExpenseLimit>()((set) => ({

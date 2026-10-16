@@ -26,6 +26,7 @@ export default function DropdownActionsGastoLimit({ gastoLimitId }: Props) {
         const { success, message, expenseLimit } = await selectExpenseLimitAction(gastoLimitId);
         if(success) {
             setExpenseLimitToEdit(expenseLimit);
+            openModal('expenseLimit');
         }
     };
 

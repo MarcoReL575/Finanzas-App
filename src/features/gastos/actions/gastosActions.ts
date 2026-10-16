@@ -2,7 +2,7 @@
 
 import { UserSession } from "@/src/lib/authServer";
 import { gastoService } from "../services/gastoService";
-import { BudgetDisplayItem, BudgetFormValues, SelectLimiteGasto } from "../types/types";
+import { BudgetDisplayItem, BudgetFormValues, InsertLimiteGasto, SelectLimiteGasto } from "../types/types";
 
 export async function newExpenseLimitAction(expense: BudgetFormValues) {
     const session = await UserSession();
@@ -18,14 +18,14 @@ export async function deleteGastoLimitAction(limitId: string) {
     return gastoService.deleteUserExpenseLimit(session.user.id, limitId);
 };
 
-export async function editGastoLimitAction(limitId: string) {
+export async function editGastoLimitAction(limitId: string, limit: BudgetFormValues) {
     const session = await UserSession();
     if(!session?.user.id) return { success: false, message: 'El usuario no cuenta con una sesión', editExpense: [] }
 
-    return gastoService.updateExpenseLimit(session.user.id, limitId);
+    return gastoService.updateExpenseLimit(session.user.id, limit, limitId);
 }
 
-export async function selectExpenseLimitAction(limitId: string) {
+export async function selectExpenseLimitAction(limitId: string, limit: SelectLimiteGasto) {
     const session = await UserSession();
     if(!session?.user.id) return { success: false, message: 'El usuario no cuenta con una sesión', expenseLimit: {} as SelectLimiteGasto  }
 

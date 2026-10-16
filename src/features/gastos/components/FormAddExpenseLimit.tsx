@@ -8,22 +8,24 @@ import { MONTHS } from "@/src/months";
 import { IconCheck } from "@tabler/icons-react";
 import { budgetSchema } from "../schemas/schema";
 import { BudgetFormValues } from "../types/types";
-import { newExpenseLimitAction } from "../actions/gastosActions";
+import { editGastoLimitAction, newExpenseLimitAction } from "../actions/gastosActions";
 import toast from "react-hot-toast";
 import { useModalStore } from "@/src/shared/stores/modalStore";
+import { useExpenseLimit } from "@/src/shared/stores/useExpenseLimit";
 
 export default function FormAddExpenseLimit() {
 
     const closeModal = useModalStore((state)=> state.closeModal);
+    const expenseLimitToEdit = useExpenseLimit((state)=> state.expenseLimitToEdit);
 
     const { register, formState: { errors }, handleSubmit } = useForm({
         resolver: zodResolver(budgetSchema),
         mode: 'onBlur',
         defaultValues: {
-            monto: undefined,
-            category: '',
-            month: new Date().getMonth() + 1,
-            year: new Date().getFullYear(),
+            monto: expenseLimitToEdit.monto?? undefined,
+            category: expenseLimitToEdit.category ?? '',
+            month: expenseLimitToEdit.month ?? new Date().getMonth() + 1,
+            year: expenseLimitToEdit.year ?? new Date().getFullYear(),
         }
     });
 
@@ -33,13 +35,27 @@ export default function FormAddExpenseLimit() {
             ...data,
             monto: montoEnCentavos
         }
-        const { success, message } = await newExpenseLimitAction(newData);
-        if(!success) {
-            toast.error(message);
+
+        if(!expenseLimitToEdit) {
+            const { success, message } = await newExpenseLimitAction(newData);
+            if(!success) {
+                toast.error(message);
+            }
+            if(success) {
+                toast.success(message);
+                closeModal();
+            }
         }
-        if(success) {
-            toast.success(message);
-            closeModal();
+
+        if(expenseLimitToEdit) {
+            const { success, message } = await editGastoLimitAction(expenseLimitToEdit.id,newData);
+            if(!success) {
+                toast.error(message);
+            }
+            if(success) {
+                toast.success(message);
+                closeModal();
+            }
         }
     }
 
