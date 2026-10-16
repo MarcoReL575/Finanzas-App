@@ -1,5 +1,4 @@
 import { SelectLimiteGasto } from '@/src/features/gastos/types/types';
-import { DateRange } from '@daypicker/react';
 import { create } from 'zustand'
 
 interface ExpenseLimit {   
@@ -14,7 +13,8 @@ export const useExpenseLimit = create<ExpenseLimit>()((set) => ({
     expenseLimitId: '',
     setExpenseLimitId: (expenseLimitId)=> set({ expenseLimitId }),
 
-    expenseLimitToEdit: {} as SelectLimiteGasto,
+    // undefined = modo crear; con un límite = modo editar
+    expenseLimitToEdit: undefined,
     setExpenseLimitToEdit: (expenseLimitToEdit)=> set({ expenseLimitToEdit }),
 
 }))

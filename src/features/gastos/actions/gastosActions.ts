@@ -25,7 +25,7 @@ export async function editGastoLimitAction(limitId: string, limit: BudgetFormVal
     return gastoService.updateExpenseLimit(session.user.id, limit, limitId);
 }
 
-export async function selectExpenseLimitAction(limitId: string, limit: SelectLimiteGasto) {
+export async function selectExpenseLimitAction(limitId: string ) {
     const session = await UserSession();
     if(!session?.user.id) return { success: false, message: 'El usuario no cuenta con una sesión', expenseLimit: {} as SelectLimiteGasto  }
 
